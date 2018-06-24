@@ -1,0 +1,144 @@
+html{
+    position:relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 100px;
+    margin-top: 300px;
+    color: white;
+    background-image:  url("./img/fondo.jpg");
+}
+
+table.center {
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 20px;
+    text-align: center;
+    width: 95%;
+    background-color: #021E47;
+    /*border-radius: 25px;*/
+}
+
+table.stadistics{
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 20px;
+    text-align: center;
+    width: 50%;
+    background-color: #021E47;
+}
+
+table.register{
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 20px;
+    text-align: center;
+    width: 25%;
+    background-color: #021E47;
+}
+
+table.insurance {
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 20px;
+    text-align: center;
+    width: 25%;
+    background-color: #444444;
+    border-radius: 25px;
+}
+
+.footer {
+    position:fixed;
+    bottom: 0;
+    width:99%;
+    height: 70px;
+    background:#888888;
+    padding-top: 10px;
+}
+
+.footerTable {
+    font-size: 20px;
+    text-align: center;
+    width: 70%;
+}
+
+.header{
+    position:fixed;
+    top: 0;
+    width:99%;
+    height:220px;
+    padding-top: 10px;
+    z-index:1;
+    background: #0F4DA8;
+}
+
+.title {
+    background-color: #0F4DA8;
+    text-align: center;
+    color: white;
+    line-height: 10px;
+    height: 40px;
+    font-size: 80px;
+    width: 99%
+}
+
+.botonLogout {
+    margin-right: 20px;
+    border-radius: 25px;
+    font-size: 20px;
+    background-color: dimgrey;
+    color: white;
+    float:right;
+}
+
+.boton {
+    border-radius: 25px;
+    font-size: 20px;
+    background-color: dimgrey;
+    color: white;
+    margin:auto;
+    display:block;
+}
+
+.botonTable {
+    border-radius: 20px;
+    font-size: 15px;
+    background-color: dimgrey;
+    color: white;
+
+}
+
+.contenedorCentrado{
+    border-radius: 20px 20px 0px 0px;
+    margin: 0 auto;
+    width: 250px;
+    text-align: center;
+}
+
+.box {
+    padding: 30px;
+    border-radius: 20px;
+    background-color: #021E47;
+    margin: 200px auto;
+    width: 250px;
+}
+
+.inputText{
+    font-size: 20px;
+}
+
+.textAux{
+    text-align: center;
+    font-size: 20px;
+    margin-left: 20px;
+}
+
+h3{
+    text-align: right;
+    padding-right: 20px;
+}
+
+h2{
+    padding-left: 20px;
+}
