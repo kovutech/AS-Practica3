@@ -17,7 +17,7 @@
     if (session.getAttribute("user") != null) {
         response.sendRedirect("main.jsp");
     }
-
+/*
     if (session.getAttribute("userList") == null) {
         try {
             UserBean userBean = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/UserBean");
@@ -29,6 +29,7 @@
         } catch (NamingException ex) {
         }
     }
+*/
 
     LogBean logBean = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/LogBean");
     logBean.addFuntion("index.jsp");

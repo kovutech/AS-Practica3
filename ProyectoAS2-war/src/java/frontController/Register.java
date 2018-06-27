@@ -5,13 +5,15 @@
  */
 package frontController;
 
-import com.as.practica2.object.User;
-import com.as.practica2.stateful.UserBean;
+import com.as.practica2.SBentity.UserFacade;
+import com.as.practica2.entity.User;
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -22,27 +24,34 @@ public class Register extends FrontCommand {
     @Override
     public void process() {
         try {
-            addUser();
-            forward("/register.jsp");
+            if (addUser()) {
+                forward("/index.jsp");
+            } else {
+                forward("/register.jsp");
+            }
         } catch (ServletException | IOException ex) {
             Logger.getLogger(UnknownCommand.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public void addUser() {
-        if (request.getParameter("register") != null) {
-            HttpSession session = request.getSession(true);
-            UserBean userList = (UserBean) session.getAttribute("userList");
-            userList.addUser(request.getParameter("user"), new User(request.getParameter("user"), request.getParameter("pass"), request.getParameter("email")));
-            session.setAttribute("userList", userList);
-            session.removeAttribute("user");
-            try {
-                forward("/index.jsp");
-            } catch (ServletException ex) {
-                Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
-                Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, ex);
+    public boolean addUser() {
+        try {
+            UserFacade userFacade = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/UserFacade");
+            if (request.getParameter("register") != null) {
+                List<User> users = userFacade.findAll();
+                for (User user : users) {
+                    System.out.println(user.getName() + " - " + request.getParameter("user"));
+                    if (user.getName().equals(request.getParameter("user"))) {
+                        return false;
+                    }
+                }
+                userFacade.create(new com.as.practica2.entity.User(null, request.getParameter("user"), request.getParameter("pass"), request.getParameter("email")));
+                return true;
             }
+
+        } catch (NamingException ex) {
+            Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return false;
     }
 }
