@@ -7,7 +7,6 @@ package com.as.practica2.entity;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -21,9 +20,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -49,9 +47,9 @@ public class Receipt implements Serializable {
     private Integer idReceipt;
     @Basic(optional = false)
     @NotNull
+    @Size(min = 1, max = 20)
     @Column(name = "chargeDate")
-    @Temporal(TemporalType.DATE)
-    private Date chargeDate;
+    private String chargeDate;
     @Basic(optional = false)
     @NotNull
     @Column(name = "amount")
@@ -69,7 +67,7 @@ public class Receipt implements Serializable {
         this.idReceipt = idReceipt;
     }
 
-    public Receipt(Integer idReceipt, Date chargeDate, float amount) {
+    public Receipt(Integer idReceipt, String chargeDate, float amount) {
         this.idReceipt = idReceipt;
         this.chargeDate = chargeDate;
         this.amount = amount;
@@ -83,11 +81,11 @@ public class Receipt implements Serializable {
         this.idReceipt = idReceipt;
     }
 
-    public Date getChargeDate() {
+    public String getChargeDate() {
         return chargeDate;
     }
 
-    public void setChargeDate(Date chargeDate) {
+    public void setChargeDate(String chargeDate) {
         this.chargeDate = chargeDate;
     }
 

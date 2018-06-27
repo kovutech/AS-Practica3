@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.as.practica2.SB_entity;
+package com.as.practica2.SBentity;
 
 import com.as.practica2.entity.Policy;
 import javax.ejb.Stateless;

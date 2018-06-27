@@ -48,12 +48,6 @@ public class Products implements Serializable {
     @Size(min = 1, max = 65535)
     @Column(name = "name")
     private String name;
-    @Basic(optional = false)
-    @NotNull
-    @Lob
-    @Size(min = 1, max = 65535)
-    @Column(name = "img_address")
-    private String imgAddress;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codProduct")
     private Collection<Policy> policyCollection;
 
@@ -64,10 +58,9 @@ public class Products implements Serializable {
         this.idProduct = idProduct;
     }
 
-    public Products(Integer idProduct, String name, String imgAddress) {
+    public Products(Integer idProduct, String name) {
         this.idProduct = idProduct;
         this.name = name;
-        this.imgAddress = imgAddress;
     }
 
     public Integer getIdProduct() {
@@ -84,14 +77,6 @@ public class Products implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getImgAddress() {
-        return imgAddress;
-    }
-
-    public void setImgAddress(String imgAddress) {
-        this.imgAddress = imgAddress;
     }
 
     @XmlTransient

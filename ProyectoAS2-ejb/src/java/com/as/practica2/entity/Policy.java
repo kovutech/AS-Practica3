@@ -7,7 +7,6 @@ package com.as.practica2.entity;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -21,9 +20,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -50,14 +48,14 @@ public class Policy implements Serializable {
     private Integer idPolicy;
     @Basic(optional = false)
     @NotNull
+    @Size(min = 1, max = 20)
     @Column(name = "fromDate")
-    @Temporal(TemporalType.DATE)
-    private Date fromDate;
+    private String fromDate;
     @Basic(optional = false)
     @NotNull
+    @Size(min = 1, max = 20)
     @Column(name = "toDate")
-    @Temporal(TemporalType.DATE)
-    private Date toDate;
+    private String toDate;
     @Basic(optional = false)
     @NotNull
     @Column(name = "amount")
@@ -80,7 +78,7 @@ public class Policy implements Serializable {
         this.idPolicy = idPolicy;
     }
 
-    public Policy(Integer idPolicy, Date fromDate, Date toDate, float amount) {
+    public Policy(Integer idPolicy, String fromDate, String toDate, float amount) {
         this.idPolicy = idPolicy;
         this.fromDate = fromDate;
         this.toDate = toDate;
@@ -95,19 +93,19 @@ public class Policy implements Serializable {
         this.idPolicy = idPolicy;
     }
 
-    public Date getFromDate() {
+    public String getFromDate() {
         return fromDate;
     }
 
-    public void setFromDate(Date fromDate) {
+    public void setFromDate(String fromDate) {
         this.fromDate = fromDate;
     }
 
-    public Date getToDate() {
+    public String getToDate() {
         return toDate;
     }
 
-    public void setToDate(Date toDate) {
+    public void setToDate(String toDate) {
         this.toDate = toDate;
     }
 
