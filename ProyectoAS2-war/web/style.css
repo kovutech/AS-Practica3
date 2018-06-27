@@ -142,3 +142,20 @@ h3{
 h2{
     padding-left: 20px;
 }
+
+.izquierda{
+    float:left;
+    height: 150px;
+    width: 150px;
+}
+
+.derecha{
+    width:900px;
+    float:left;
+}
+
+.cajaHeader{
+    justify-content: center;
+    align-items: center;
+      display: flex;
+}

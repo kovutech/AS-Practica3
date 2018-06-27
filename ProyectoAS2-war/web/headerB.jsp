@@ -15,6 +15,14 @@
 </head>
 <body>
     <div class="header">
-        <h1 class="title">Seguros lorem ipsun s.a.</h1>
+        <div class="cajaHeader">
+            <div class="izquierda">
+                <img src="./img/logo.png" alt="" height="150px" width="150px">
+            </div>
+            <div class="derecha">
+                <h1 class="title">Seguros lorem ipsun s.a.</h1>
+            </div>
+            <div style="clear:both"></div>
+        </div>
     </div>
 </body>

@@ -15,7 +15,15 @@
 </head>
 <body>
     <div class="header">
-        <h1 class="title">Seguros lorem ipsun s.a.</h1>
+        <div class="cajaHeader">
+            <div class="izquierda">
+                <img src="./img/logo.png" alt="" height="150px" width="150px">
+            </div>
+            <div class="derecha">
+                <h1 class="title">Seguros lorem ipsun s.a.</h1>
+            </div>
+            <div style="clear:both"></div>
+        </div>
         <FORM action='FrontController'>
             <INPUT type='hidden' name='command' value='Logout'>
             <INPUT type='submit' value='Cerrar sesión' class='botonLogout'>
@@ -24,5 +32,6 @@
             String user = (String) session.getAttribute("user");
             out.print("<h3>Agente: " + user + "</h3>");
         %>
+
     </div>
 </body>
