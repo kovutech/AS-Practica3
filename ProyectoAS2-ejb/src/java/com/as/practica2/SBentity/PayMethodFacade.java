@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.as.practica2.SBentity;
+package com.as.practica2.sbEntity;
 
 import com.as.practica2.entity.PayMethod;
 import javax.ejb.Stateless;

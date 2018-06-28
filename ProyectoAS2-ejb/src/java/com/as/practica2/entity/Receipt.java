@@ -6,9 +6,7 @@
 package com.as.practica2.entity;
 
 import java.io.Serializable;
-import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,12 +16,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -54,11 +50,12 @@ public class Receipt implements Serializable {
     @NotNull
     @Column(name = "amount")
     private float amount;
+    @JoinColumn(name = "cod_policy", referencedColumnName = "id_policy")
+    @ManyToOne(optional = false)
+    private Policy codPolicy;
     @JoinColumn(name = "cod_state", referencedColumnName = "id_ReceiptState")
     @ManyToOne(optional = false)
     private ReceiptState codState;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codReceipt")
-    private Collection<PolicyReceipt> policyReceiptCollection;
 
     public Receipt() {
     }
@@ -97,21 +94,20 @@ public class Receipt implements Serializable {
         this.amount = amount;
     }
 
+    public Policy getCodPolicy() {
+        return codPolicy;
+    }
+
+    public void setCodPolicy(Policy codPolicy) {
+        this.codPolicy = codPolicy;
+    }
+
     public ReceiptState getCodState() {
         return codState;
     }
 
     public void setCodState(ReceiptState codState) {
         this.codState = codState;
-    }
-
-    @XmlTransient
-    public Collection<PolicyReceipt> getPolicyReceiptCollection() {
-        return policyReceiptCollection;
-    }
-
-    public void setPolicyReceiptCollection(Collection<PolicyReceipt> policyReceiptCollection) {
-        this.policyReceiptCollection = policyReceiptCollection;
     }
 
     @Override

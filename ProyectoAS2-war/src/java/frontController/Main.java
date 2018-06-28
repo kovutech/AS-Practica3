@@ -5,12 +5,15 @@
  */
 package frontController;
 
-import com.as.practica2.stateful.ClientBean;
-import com.as.practica2.object.Client;
-import com.as.practica2.stateful.UserBean;
+import com.as.practica2.sbEntity.ClientFacade;
+import com.as.practica2.sbEntity.UserFacade;
+import com.as.practica2.entity.Client;
+import com.as.practica2.entity.User;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpSession;
 
@@ -22,30 +25,54 @@ public class Main extends FrontCommand {
 
     public void addClient() {
         if (request.getParameter("addClient") != null) {
-            HttpSession session = request.getSession(true);
-            ClientBean clientList = (ClientBean) session.getAttribute("clientList");
-            clientList.addClient(new Client(request.getParameter("dni"), request.getParameter("nombre"), request.getParameter("apellido"), request.getParameter("telefono")), (String) session.getAttribute("user"));
-            session.setAttribute("clientList", clientList);
+            try {
+                HttpSession session = request.getSession(true);
+                User user = (User) session.getAttribute("user");
+                ClientFacade clientFacade = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/ClientFacade");
+               // clientFacade.create(new Client(null, user.getIdUser().intValue(), request.getParameter("identification"), request.getParameter("name"), request.getParameter("surName"), request.getParameter("telephone")));
+            } catch (NamingException ex) {
+                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            }
+//                userClientFacade.create(new Client(null,,request.getParameter("name"),request.getParameter("surName"),request.getParameter("telephone")));
+
+//userClientFacade.create(new Client(null,Integer.parseInt(request.getParameter("identification")),request.getParameter("name"),request.getParameter("surName"),request.getParameter("telephone")));
         }
     }
 
     public void deleteClient() {
-
-        if (request.getParameter("deleteClient") != null) {
-            HttpSession session = request.getSession(true);
-            ClientBean clientList = (ClientBean) session.getAttribute("clientList");
-            clientList.deleteClient(request.getParameter("deleteClient"), (String) session.getAttribute("user"));
-            session.setAttribute("clientList", clientList);
-        }
+        /*if (request.getParameter("deleteClient") != null) {
+            try {
+                ClientFacade clientFacade = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/ClientFacade");
+                Client client = clientFacade.findByIdentification(Integer.parseInt(request.getParameter("deleteClient")));
+                if (client != null) {
+                    clientFacade.remove(client);
+                }
+            } catch (NamingException ex) {
+                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }*/
     }
 
     public boolean checkUser() {
         if (request.getParameter("login") != null) {
-            HttpSession session = request.getSession(true);
-            UserBean userList = (UserBean) session.getAttribute("userList");
-            if (!userList.checkUserLogin(request.getParameter("user"), request.getParameter("pass"))) {
-                session.removeAttribute("user");
-                return false;
+            try {
+                HttpSession session = request.getSession(true);
+                UserFacade userFacade = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/UserFacade");
+                User user = userFacade.findByName(request.getParameter("user"));
+                if (user != null) {
+                    String pass = user.getPass();
+                    if (!pass.equals(request.getParameter("pass"))) {
+                        session.removeAttribute("user");
+                        return false;
+                    }
+                } else {
+                    session.removeAttribute("user");
+                    return false;
+                }
+                session.setAttribute("user", user);
+                //session.setAttribute("userId", user.getIdUser());
+            } catch (NamingException ex) {
+                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return true;

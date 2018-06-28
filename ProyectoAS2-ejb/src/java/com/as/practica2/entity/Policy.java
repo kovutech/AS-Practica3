@@ -60,16 +60,17 @@ public class Policy implements Serializable {
     @NotNull
     @Column(name = "amount")
     private float amount;
-    @JoinColumn(name = "cod_payMethod", referencedColumnName = "id_payMethod")
-    @ManyToOne(optional = false)
-    private PayMethod codpayMethod;
     @JoinColumn(name = "cod_product", referencedColumnName = "id_product")
     @ManyToOne(optional = false)
     private Products codProduct;
+    @JoinColumn(name = "cod_client", referencedColumnName = "id_client")
+    @ManyToOne(optional = false)
+    private Client codClient;
+    @JoinColumn(name = "cod_payMethod", referencedColumnName = "id_payMethod")
+    @ManyToOne(optional = false)
+    private PayMethod codpayMethod;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codPolicy")
-    private Collection<ClientPolicy> clientPolicyCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codPolicy")
-    private Collection<PolicyReceipt> policyReceiptCollection;
+    private Collection<Receipt> receiptCollection;
 
     public Policy() {
     }
@@ -117,14 +118,6 @@ public class Policy implements Serializable {
         this.amount = amount;
     }
 
-    public PayMethod getCodpayMethod() {
-        return codpayMethod;
-    }
-
-    public void setCodpayMethod(PayMethod codpayMethod) {
-        this.codpayMethod = codpayMethod;
-    }
-
     public Products getCodProduct() {
         return codProduct;
     }
@@ -133,22 +126,29 @@ public class Policy implements Serializable {
         this.codProduct = codProduct;
     }
 
+    public Client getCodClient() {
+        return codClient;
+    }
+
+    public void setCodClient(Client codClient) {
+        this.codClient = codClient;
+    }
+
+    public PayMethod getCodpayMethod() {
+        return codpayMethod;
+    }
+
+    public void setCodpayMethod(PayMethod codpayMethod) {
+        this.codpayMethod = codpayMethod;
+    }
+
     @XmlTransient
-    public Collection<ClientPolicy> getClientPolicyCollection() {
-        return clientPolicyCollection;
+    public Collection<Receipt> getReceiptCollection() {
+        return receiptCollection;
     }
 
-    public void setClientPolicyCollection(Collection<ClientPolicy> clientPolicyCollection) {
-        this.clientPolicyCollection = clientPolicyCollection;
-    }
-
-    @XmlTransient
-    public Collection<PolicyReceipt> getPolicyReceiptCollection() {
-        return policyReceiptCollection;
-    }
-
-    public void setPolicyReceiptCollection(Collection<PolicyReceipt> policyReceiptCollection) {
-        this.policyReceiptCollection = policyReceiptCollection;
+    public void setReceiptCollection(Collection<Receipt> receiptCollection) {
+        this.receiptCollection = receiptCollection;
     }
 
     @Override

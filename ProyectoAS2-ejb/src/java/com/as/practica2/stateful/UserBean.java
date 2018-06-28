@@ -5,10 +5,10 @@
  */
 package com.as.practica2.stateful;
 
+import com.as.practica2.sbEntity.UserFacade;
 import com.as.practica2.object.User;
 import com.as.practica2.singleton.LogBean;
 import com.as.practica2.singleton.StadisticsBean;
-import com.as.practica2.stateful.UserBean;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -81,25 +81,36 @@ public class UserBean {
     }
 
     public boolean checkUserLogin(String auxUser, String auxPass) {
-        stadistics.addComponentUsers("SinUsuario");
-        log.addFuntion("UserBean::checkUserLogin");
-        stadistics.addComponent("UserBean");
-        setText("UserBean", "checkUserLogin", "SinUsuario");
-        String pass = "";
-        if (map.containsKey(auxUser)) {
-            pass = map.get(auxUser).get(0).getPass();
-            if (!pass.equals(auxPass)) {
-                return false;
-            }
-        } else {
-            return false;
-        }
-        try {
-            StadisticsBean stadisticsBean = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/StadisticsBean");
-            stadisticsBean.addUser();
-        } catch (NamingException ex) {
-            Logger.getLogger(UserBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        try {
+//            stadistics.addComponentUsers("SinUsuario");
+//            log.addFuntion("UserBean::checkUserLogin");
+//            stadistics.addComponent("UserBean");
+//            setText("UserBean", "checkUserLogin", "SinUsuario");
+//            UserFacade userFacade = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/UserFacade");
+//            //com.as.practica2.entity.User user = userFacade.findByName(auxUser);
+//            //String pass = user.getPass();
+//            if (!pass.equals(auxPass)) {
+//                return false;
+//            }
+//        } catch (NamingException ex) {
+//            Logger.getLogger(UserBean.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+
+//        String pass = "";
+//        if (map.containsKey(auxUser)) {
+//            pass = map.get(auxUser).get(0).getPass();
+//            if (!pass.equals(auxPass)) {
+//                return false;
+//            }
+//        } else {
+//            return false;
+//        }
+//        try {
+//            StadisticsBean stadisticsBean = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/StadisticsBean");
+//            stadisticsBean.addUser();
+//        } catch (NamingException ex) {
+//            Logger.getLogger(UserBean.class.getName()).log(Level.SEVERE, null, ex);
+//        }
         return true;
     }
 

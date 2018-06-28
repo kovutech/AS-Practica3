@@ -6,23 +6,20 @@
 package com.as.practica2.entity;
 
 import java.io.Serializable;
-import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -33,7 +30,11 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Client.findAll", query = "SELECT c FROM Client c")
-    , @NamedQuery(name = "Client.findByIdClient", query = "SELECT c FROM Client c WHERE c.idClient = :idClient")})
+    , @NamedQuery(name = "Client.findByIdClient", query = "SELECT c FROM Client c WHERE c.idClient = :idClient")
+    , @NamedQuery(name = "Client.findByIdentification", query = "SELECT c FROM Client c WHERE c.identification = :identification")
+    , @NamedQuery(name = "Client.findByName", query = "SELECT c FROM Client c WHERE c.name = :name")
+    , @NamedQuery(name = "Client.findBySurName", query = "SELECT c FROM Client c WHERE c.surName = :surName")
+    , @NamedQuery(name = "Client.findByTelephone", query = "SELECT c FROM Client c WHERE c.telephone = :telephone")})
 public class Client implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -44,26 +45,27 @@ public class Client implements Serializable {
     private Integer idClient;
     @Basic(optional = false)
     @NotNull
-    @Lob
-    @Size(min = 1, max = 65535)
+    @Size(min = 1, max = 8)
+    @Column(name = "identification")
+    private String identification;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 40)
     @Column(name = "name")
     private String name;
     @Basic(optional = false)
     @NotNull
-    @Lob
-    @Size(min = 1, max = 65535)
+    @Size(min = 1, max = 40)
     @Column(name = "surName")
     private String surName;
     @Basic(optional = false)
     @NotNull
-    @Lob
-    @Size(min = 1, max = 65535)
+    @Size(min = 1, max = 9)
     @Column(name = "telephone")
     private String telephone;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codClient")
-    private Collection<ClientPolicy> clientPolicyCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codClient")
-    private Collection<UserClient> userClientCollection;
+    @JoinColumn(name = "cod_user", referencedColumnName = "id_user")
+    @ManyToOne(optional = false)
+    private User codUser;
 
     public Client() {
     }
@@ -72,8 +74,9 @@ public class Client implements Serializable {
         this.idClient = idClient;
     }
 
-    public Client(Integer idClient, String name, String surName, String telephone) {
+    public Client(Integer idClient, String identification, String name, String surName, String telephone) {
         this.idClient = idClient;
+        this.identification = identification;
         this.name = name;
         this.surName = surName;
         this.telephone = telephone;
@@ -85,6 +88,14 @@ public class Client implements Serializable {
 
     public void setIdClient(Integer idClient) {
         this.idClient = idClient;
+    }
+
+    public String getIdentification() {
+        return identification;
+    }
+
+    public void setIdentification(String identification) {
+        this.identification = identification;
     }
 
     public String getName() {
@@ -111,22 +122,12 @@ public class Client implements Serializable {
         this.telephone = telephone;
     }
 
-    @XmlTransient
-    public Collection<ClientPolicy> getClientPolicyCollection() {
-        return clientPolicyCollection;
+    public User getCodUser() {
+        return codUser;
     }
 
-    public void setClientPolicyCollection(Collection<ClientPolicy> clientPolicyCollection) {
-        this.clientPolicyCollection = clientPolicyCollection;
-    }
-
-    @XmlTransient
-    public Collection<UserClient> getUserClientCollection() {
-        return userClientCollection;
-    }
-
-    public void setUserClientCollection(Collection<UserClient> userClientCollection) {
-        this.userClientCollection = userClientCollection;
+    public void setCodUser(User codUser) {
+        this.codUser = codUser;
     }
 
     @Override

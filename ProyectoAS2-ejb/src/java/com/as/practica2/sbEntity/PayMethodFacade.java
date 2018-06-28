@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.as.practica2.SBentity;
+package com.as.practica2.sbEntity;
 
-import com.as.practica2.entity.ClientPolicy;
+import com.as.practica2.entity.PayMethod;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -15,7 +15,7 @@ import javax.persistence.PersistenceContext;
  * @author Jorge
  */
 @Stateless
-public class ClientPolicyFacade extends AbstractFacade<ClientPolicy> {
+public class PayMethodFacade extends AbstractFacade<PayMethod> {
 
     @PersistenceContext(unitName = "ProyectoAS2-ejbPU")
     private EntityManager em;
@@ -25,8 +25,8 @@ public class ClientPolicyFacade extends AbstractFacade<ClientPolicy> {
         return em;
     }
 
-    public ClientPolicyFacade() {
-        super(ClientPolicy.class);
+    public PayMethodFacade() {
+        super(PayMethod.class);
     }
     
 }

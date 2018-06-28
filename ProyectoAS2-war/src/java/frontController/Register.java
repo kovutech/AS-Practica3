@@ -5,7 +5,7 @@
  */
 package frontController;
 
-import com.as.practica2.SBentity.UserFacade;
+import com.as.practica2.sbEntity.UserFacade;
 import com.as.practica2.entity.User;
 import java.io.IOException;
 import java.util.List;
@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -34,21 +35,21 @@ public class Register extends FrontCommand {
         }
     }
 
-    public boolean addUser() {
+     public boolean addUser() {
         try {
+            HttpSession session = request.getSession(true);
             UserFacade userFacade = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/UserFacade");
             if (request.getParameter("register") != null) {
                 List<User> users = userFacade.findAll();
                 for (User user : users) {
-                    System.out.println(user.getName() + " - " + request.getParameter("user"));
                     if (user.getName().equals(request.getParameter("user"))) {
                         return false;
                     }
                 }
-                userFacade.create(new com.as.practica2.entity.User(null, request.getParameter("user"), request.getParameter("pass"), request.getParameter("email")));
+                userFacade.create(new User(null, request.getParameter("user"), request.getParameter("pass"), request.getParameter("email")));
+                session.removeAttribute("user");
                 return true;
             }
-
         } catch (NamingException ex) {
             Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, ex);
         }

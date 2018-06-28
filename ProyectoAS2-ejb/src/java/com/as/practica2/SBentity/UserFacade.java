@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.as.practica2.SBentity;
+package com.as.practica2.sbEntity;
 
 import com.as.practica2.entity.User;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -28,5 +29,16 @@ public class UserFacade extends AbstractFacade<User> {
     public UserFacade() {
         super(User.class);
     }
-    
+
+    public User findByName(String s) {
+        List<User> user = em.createNamedQuery("User.findByName")
+                .setParameter("name", s)
+                .getResultList();
+        if (user.size() > 0) {
+            return user.get(0);
+        } else {
+            return null;
+        }
+    }
+
 }

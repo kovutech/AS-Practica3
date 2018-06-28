@@ -4,6 +4,7 @@
     Author     : Jorge
 --%>
 
+<%@page import="com.as.practica2.entity.User"%>
 <%@page import="javax.naming.InitialContext"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -29,8 +30,8 @@
             <INPUT type='submit' value='Cerrar sesión' class='botonLogout'>
         </FORM><BR>
         <%
-            String user = (String) session.getAttribute("user");
-            out.print("<h3>Agente: " + user + "</h3>");
+            User user = (User) session.getAttribute("user");
+            out.print("<h3>Agente: " + user.getName() + "</h3>");
         %>
 
     </div>

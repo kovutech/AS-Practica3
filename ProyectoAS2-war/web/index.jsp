@@ -13,24 +13,9 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-
     if (session.getAttribute("user") != null) {
         response.sendRedirect("main.jsp");
     }
-/*
-    if (session.getAttribute("userList") == null) {
-        try {
-            UserBean userBean = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/UserBean");
-            session.setAttribute("userList", userBean);
-            UserBean userList = (UserBean) session.getAttribute("userList");
-
-            userList.addUser("jorge", new User("jorge", "1234", "kovutech@gmail.com"));
-
-        } catch (NamingException ex) {
-        }
-    }
-*/
-
     LogBean logBean = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/LogBean");
     logBean.addFuntion("index.jsp");
 
