@@ -4,13 +4,13 @@
     Author     : Jorge
 --%>
 
+<%@page import="com.as.practica2.entity.Client"%>
 <%@page import="com.as.practica2.entity.User"%>
 <%@page import="com.as.practica2.sbEntity.ClientFacade"%>
 <%@page import="com.as.practica2.singleton.StadisticsBean"%>
 <%@page import="com.as.practica2.singleton.LogBean"%>
 <%@page import="com.as.practica2.stateful.ClientBean"%>
 <%@page import="com.as.practica2.stateless.CalculateDniLetter"%>
-<%@page import="com.as.practica2.object.Client"%>
 <%@page import="java.util.ResourceBundle.Control"%>
 <%@page import="java.util.logging.Level"%>
 <%@page import="java.util.logging.Logger"%>
@@ -25,19 +25,7 @@
         RequestDispatcher r = request.getRequestDispatcher("index.jsp");
         r.forward(request, response);
     }
-    /*
-    if (session.getAttribute("clientList") == null) {
-        try {
-            ClientBean clientStatBean = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/ClientBean");
-            session.setAttribute("clientList", clientStatBean);
-            ClientBean clientList = (ClientBean) session.getAttribute("clientList");
 
-            clientList.addClient(new Client("00000000", "Jorge", "Fernandez", "555-555-555"), (String) session.getAttribute("user"));
-            clientList.addClient(new Client("11111111", "Pedro", "Cabrera", "555-555-444"), (String) session.getAttribute("user"));
-        } catch (NamingException ex) {
-        }
-    }
-     */
     LogBean logBean = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/LogBean");
     logBean.addFuntion("main.jsp");
 
@@ -73,30 +61,33 @@
     out.print("<TABLE border=1 class='center'>");
     out.print("<TR><TD colspan='6'>LISTADO DE CLIENTES</TD></TR>");
     out.print("<TR><TH><B>Dni</B></TH><TH><B>Nombre</B></TH><TH><B>Apellido</B></TH><TH><B>Teléfono</B></TH><TH><B>Ficha</B></TH><TH><B>Eliminar</B></TH></TR>");
-    /*    
+    ClientFacade clientFacade = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/ClientFacade");
+    List<Client> clients = clientFacade.findAll();
     if (clients != null) {
-        for (UserClient elem : clients) {
-            out.print("<TR>");
-            out.print("<TD>" + elem.getCodClient().getIdentification() + " " + calculateDniLetter.getDniLetter(String.valueOf(elem.getCodClient().getIdentification()), user.getName()) + "</TD>");
-            out.print("<TD>" + elem.getCodClient().getName() + "</TD>");
-            out.print("<TD>" + elem.getCodClient().getSurName() + "</TD>");
-            out.print("<TD>" + elem.getCodClient().getTelephone() + "</TD>");
-            out.print("<FORM action='FrontController' method='post'>");
-            out.print("<INPUT type='hidden' name='command' value='Policies'>");
-            out.print("<INPUT type='hidden' name='listPolicy' value='1'>");
-            out.print("<INPUT type='hidden' name='dni' value='" + elem.getCodClient().getIdentification() + "'>");
-            out.print("<INPUT type='hidden' name='nombre' value='" + elem.getCodClient().getName() + "'>");
-            out.print("<INPUT type='hidden' name='apellido' value='" + elem.getCodClient().getSurName() + "'>");
-            out.print("<INPUT type='hidden' name='telefono' value='" + elem.getCodClient().getTelephone() + "'>");
-            out.print("<TD><INPUT type='submit' value='Acceder' class='botonTable'></TD></FORM>");
-            out.print("<FORM action='FrontController' method='post'>");
-            out.print("<INPUT type='hidden' name='command' value='Main'>");
-            out.print("<INPUT type='hidden' name='deleteClient' value='" + elem.getCodClient().getIdentification() + "'>");
-            out.print("<TD><INPUT type='submit' value='Eliminar' class='botonTable'></TD>"
-                    + "</FORM>");
-            out.print("</TR>");
+        for (Client elem : clients) {
+            if (elem.getCodUser().getIdUser() == user.getIdUser()) {
+                out.print("<TR>");
+                out.print("<TD>" + elem.getIdentification() + " " + calculateDniLetter.getDniLetter(String.valueOf(elem.getIdentification()), user.getName()) + "</TD>");
+                out.print("<TD>" + elem.getName() + "</TD>");
+                out.print("<TD>" + elem.getSurName() + "</TD>");
+                out.print("<TD>" + elem.getTelephone() + "</TD>");
+                out.print("<FORM action='FrontController' method='post'>");
+                out.print("<INPUT type='hidden' name='command' value='Policies'>");
+                out.print("<INPUT type='hidden' name='listPolicy' value='1'>");
+                out.print("<INPUT type='hidden' name='dni' value='" + elem.getIdentification() + "'>");
+                out.print("<INPUT type='hidden' name='nombre' value='" + elem.getName() + "'>");
+                out.print("<INPUT type='hidden' name='apellido' value='" + elem.getSurName() + "'>");
+                out.print("<INPUT type='hidden' name='telefono' value='" + elem.getTelephone() + "'>");
+                out.print("<TD><INPUT type='submit' value='Acceder' class='botonTable'></TD></FORM>");
+                out.print("<FORM action='FrontController' method='post'>");
+                out.print("<INPUT type='hidden' name='command' value='Main'>");
+                out.print("<INPUT type='hidden' name='deleteClient' value='" + elem.getIdentification() + "'>");
+                out.print("<TD><INPUT type='submit' value='Eliminar' class='botonTable'></TD>"
+                        + "</FORM>");
+                out.print("</TR>");
+            }
         }
-    }*/
+    }
     out.print("</TABLE>");
 
 %>

@@ -29,7 +29,7 @@ public class Main extends FrontCommand {
                 HttpSession session = request.getSession(true);
                 User user = (User) session.getAttribute("user");
                 ClientFacade clientFacade = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/ClientFacade");
-               // clientFacade.create(new Client(null, user.getIdUser().intValue(), request.getParameter("identification"), request.getParameter("name"), request.getParameter("surName"), request.getParameter("telephone")));
+                clientFacade.create(new Client(null, user, request.getParameter("identification"), request.getParameter("name"), request.getParameter("surName"), request.getParameter("telephone")));
             } catch (NamingException ex) {
                 Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -40,17 +40,17 @@ public class Main extends FrontCommand {
     }
 
     public void deleteClient() {
-        /*if (request.getParameter("deleteClient") != null) {
+        if (request.getParameter("deleteClient") != null) {
             try {
                 ClientFacade clientFacade = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/ClientFacade");
-                Client client = clientFacade.findByIdentification(Integer.parseInt(request.getParameter("deleteClient")));
+                Client client = clientFacade.findByIdentification(request.getParameter("deleteClient"));
                 if (client != null) {
                     clientFacade.remove(client);
                 }
             } catch (NamingException ex) {
                 Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }*/
+        }
     }
 
     public boolean checkUser() {

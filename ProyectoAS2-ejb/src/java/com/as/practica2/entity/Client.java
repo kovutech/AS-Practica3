@@ -74,8 +74,9 @@ public class Client implements Serializable {
         this.idClient = idClient;
     }
 
-    public Client(Integer idClient, String identification, String name, String surName, String telephone) {
+    public Client(Integer idClient, User codUser, String identification, String name, String surName, String telephone) {
         this.idClient = idClient;
+        this.codUser = codUser;
         this.identification = identification;
         this.name = name;
         this.surName = surName;
