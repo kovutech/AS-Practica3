@@ -35,6 +35,12 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Receipt.findByAmount", query = "SELECT r FROM Receipt r WHERE r.amount = :amount")})
 public class Receipt implements Serializable {
 
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
+    @Column(name = "reference")
+    private String reference;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -133,6 +139,14 @@ public class Receipt implements Serializable {
     @Override
     public String toString() {
         return "com.as.practica2.entity.Receipt[ idReceipt=" + idReceipt + " ]";
+    }
+
+    public String getReference() {
+        return reference;
+    }
+
+    public void setReference(String reference) {
+        this.reference = reference;
     }
     
 }

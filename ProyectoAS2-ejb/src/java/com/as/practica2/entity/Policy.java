@@ -6,7 +6,9 @@
 package com.as.practica2.entity;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,10 +18,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -37,6 +41,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Policy.findByIdentification", query = "SELECT p FROM Policy p WHERE p.identification = :identification")
     , @NamedQuery(name = "Policy.findByCodClient", query = "SELECT p FROM Policy p WHERE p.codClient = :codClient")})
 public class Policy implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codPolicy")
+    private Collection<Receipt> receiptCollection;
 
     @JoinColumn(name = "cod_product", referencedColumnName = "id_product")
     @ManyToOne(optional = false)
@@ -179,6 +186,15 @@ public class Policy implements Serializable {
 
     public void setCodpayMethod(PayMethod codpayMethod) {
         this.codpayMethod = codpayMethod;
+    }
+
+    @XmlTransient
+    public Collection<Receipt> getReceiptCollection() {
+        return receiptCollection;
+    }
+
+    public void setReceiptCollection(Collection<Receipt> receiptCollection) {
+        this.receiptCollection = receiptCollection;
     }
 
 }
