@@ -57,38 +57,41 @@
     ClientBean clientList = (ClientBean) session.getAttribute("clientList");
 
     User user = (User) session.getAttribute("user");
-
-    out.print("<TABLE border=1 class='center'>");
-    out.print("<TR><TD colspan='6'>LISTADO DE CLIENTES</TD></TR>");
-    out.print("<TR><TH><B>Dni</B></TH><TH><B>Nombre</B></TH><TH><B>Apellido</B></TH><TH><B>Teléfono</B></TH><TH><B>Ficha</B></TH><TH><B>Eliminar</B></TH></TR>");
-    ClientFacade clientFacade = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/ClientFacade");
-    List<Client> clients = clientFacade.findAll();
-    if (clients != null) {
-        for (Client elem : clients) {
-            if (elem.getCodUser().getIdUser() == user.getIdUser()) {
-                out.print("<TR>");
-                out.print("<TD>" + elem.getIdentification() + " " + calculateDniLetter.getDniLetter(String.valueOf(elem.getIdentification()), user.getName()) + "</TD>");
-                out.print("<TD>" + elem.getName() + "</TD>");
-                out.print("<TD>" + elem.getSurName() + "</TD>");
-                out.print("<TD>" + elem.getTelephone() + "</TD>");
-                out.print("<FORM action='FrontController' method='post'>");
-                out.print("<INPUT type='hidden' name='command' value='Policies'>");
-                out.print("<INPUT type='hidden' name='listPolicy' value='1'>");
-                out.print("<INPUT type='hidden' name='dni' value='" + elem.getIdentification() + "'>");
-                out.print("<INPUT type='hidden' name='nombre' value='" + elem.getName() + "'>");
-                out.print("<INPUT type='hidden' name='apellido' value='" + elem.getSurName() + "'>");
-                out.print("<INPUT type='hidden' name='telefono' value='" + elem.getTelephone() + "'>");
-                out.print("<TD><INPUT type='submit' value='Acceder' class='botonTable'></TD></FORM>");
-                out.print("<FORM action='FrontController' method='post'>");
-                out.print("<INPUT type='hidden' name='command' value='Main'>");
-                out.print("<INPUT type='hidden' name='deleteClient' value='" + elem.getIdentification() + "'>");
-                out.print("<TD><INPUT type='submit' value='Eliminar' class='botonTable'></TD>"
-                        + "</FORM>");
-                out.print("</TR>");
+%>
+<TABLE border=1 class='center'>
+    <TR><TD colspan='6'>LISTADO DE CLIENTES</TD></TR>
+    <TR><TH><B>Dni</B></TH><TH><B>Nombre</B></TH><TH><B>Apellido</B></TH><TH><B>Teléfono</B></TH><TH><B>Ficha</B></TH><TH><B>Eliminar</B></TH></TR>
+                <%
+                    ClientFacade clientFacade = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/ClientFacade");
+                    List<Client> clients = clientFacade.findAll();
+                    if (clients != null) {
+                        for (Client elem : clients) {
+                            if (elem.getCodUser().getIdUser() == user.getIdUser()) {
+                %>
+    <TR>
+        <TD><%= elem.getIdentification() + " " + calculateDniLetter.getDniLetter(String.valueOf(elem.getIdentification()), user.getName())%></TD>
+        <TD><%= elem.getName()%></TD>
+        <TD><%= elem.getSurName()%></TD>
+        <TD><%= elem.getTelephone()%></TD>
+    <FORM action='FrontController' method='post'>
+        <INPUT type='hidden' name='command' value='Policies'>
+        <INPUT type='hidden' name='listPolicy' value='1'>
+        <INPUT type='hidden' name='dni' value='" + elem.getIdentification() + "'>
+        <INPUT type='hidden' name='nombre' value='" + elem.getName() + "'>
+        <INPUT type='hidden' name='apellido' value='" + elem.getSurName() + "'>
+        <INPUT type='hidden' name='telefono' value='" + elem.getTelephone() + "'>
+        <TD><INPUT type='submit' value='Acceder' class='botonTable'></TD>
+    </FORM>
+    <FORM action='FrontController' method='post'>
+        <INPUT type='hidden' name='command' value='Main'>
+        <INPUT type='hidden' name='deleteClient' value='" + elem.getIdentification() + "'>
+        <TD><INPUT type='submit' value='Eliminar' class='botonTable'></TD>
+    </FORM>
+</TR>
+<%
             }
         }
     }
-    out.print("</TABLE>");
-
 %>
+</TABLE>
 <jsp:include page="footer.jsp"/>
