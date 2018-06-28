@@ -76,15 +76,12 @@
     <FORM action='FrontController' method='post'>
         <INPUT type='hidden' name='command' value='Policies'>
         <INPUT type='hidden' name='listPolicy' value='1'>
-        <INPUT type='hidden' name='dni' value='" + elem.getIdentification() + "'>
-        <INPUT type='hidden' name='nombre' value='" + elem.getName() + "'>
-        <INPUT type='hidden' name='apellido' value='" + elem.getSurName() + "'>
-        <INPUT type='hidden' name='telefono' value='" + elem.getTelephone() + "'>
+        <INPUT type='hidden' name='identification' value='<%= elem.getIdentification() %>'>
         <TD><INPUT type='submit' value='Acceder' class='botonTable'></TD>
     </FORM>
     <FORM action='FrontController' method='post'>
         <INPUT type='hidden' name='command' value='Main'>
-        <INPUT type='hidden' name='deleteClient' value='" + elem.getIdentification() + "'>
+        <INPUT type='hidden' name='deleteClient' value='<%= elem.getIdentification() %>'>
         <TD><INPUT type='submit' value='Eliminar' class='botonTable'></TD>
     </FORM>
 </TR>

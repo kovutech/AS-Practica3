@@ -6,6 +6,8 @@
 package com.as.practica2.sbEntity;
 
 import com.as.practica2.entity.PayMethod;
+import com.as.practica2.entity.Products;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -27,6 +29,17 @@ public class PayMethodFacade extends AbstractFacade<PayMethod> {
 
     public PayMethodFacade() {
         super(PayMethod.class);
+    }
+    
+    public PayMethod findByIdPayMethod(int n) {
+        List<PayMethod> payMethod = em.createNamedQuery("PayMethod.findByIdPayMethod")
+                .setParameter("idpayMethod", n)
+                .getResultList();
+        if (payMethod.size() > 0) {
+            return payMethod.get(0);
+        } else {
+            return null;
+        }
     }
     
 }

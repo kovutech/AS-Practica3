@@ -6,9 +6,7 @@
 package com.as.practica2.entity;
 
 import java.io.Serializable;
-import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,12 +16,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -37,8 +33,19 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Policy.findByIdPolicy", query = "SELECT p FROM Policy p WHERE p.idPolicy = :idPolicy")
     , @NamedQuery(name = "Policy.findByFromDate", query = "SELECT p FROM Policy p WHERE p.fromDate = :fromDate")
     , @NamedQuery(name = "Policy.findByToDate", query = "SELECT p FROM Policy p WHERE p.toDate = :toDate")
-    , @NamedQuery(name = "Policy.findByAmount", query = "SELECT p FROM Policy p WHERE p.amount = :amount")})
+    , @NamedQuery(name = "Policy.findByAmount", query = "SELECT p FROM Policy p WHERE p.amount = :amount")
+    , @NamedQuery(name = "Policy.findByIdentification", query = "SELECT p FROM Policy p WHERE p.identification = :identification")})
 public class Policy implements Serializable {
+
+    @JoinColumn(name = "cod_product", referencedColumnName = "id_product")
+    @ManyToOne(optional = false)
+    private Products codProduct;
+    @JoinColumn(name = "cod_client", referencedColumnName = "id_client")
+    @ManyToOne(optional = false)
+    private Client codClient;
+    @JoinColumn(name = "cod_payMethod", referencedColumnName = "id_payMethod")
+    @ManyToOne(optional = false)
+    private PayMethod codpayMethod;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -60,17 +67,11 @@ public class Policy implements Serializable {
     @NotNull
     @Column(name = "amount")
     private float amount;
-    @JoinColumn(name = "cod_product", referencedColumnName = "id_product")
-    @ManyToOne(optional = false)
-    private Products codProduct;
-    @JoinColumn(name = "cod_client", referencedColumnName = "id_client")
-    @ManyToOne(optional = false)
-    private Client codClient;
-    @JoinColumn(name = "cod_payMethod", referencedColumnName = "id_payMethod")
-    @ManyToOne(optional = false)
-    private PayMethod codpayMethod;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codPolicy")
-    private Collection<Receipt> receiptCollection;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
+    @Column(name = "identification")
+    private String identification;
 
     public Policy() {
     }
@@ -79,11 +80,15 @@ public class Policy implements Serializable {
         this.idPolicy = idPolicy;
     }
 
-    public Policy(Integer idPolicy, String fromDate, String toDate, float amount) {
+    public Policy(Integer idPolicy, Client codClient, Products codProduct, PayMethod payMethod, String fromDate, String toDate, float amount, String identification) {
         this.idPolicy = idPolicy;
+        this.codClient = codClient;
+        this.codProduct = codProduct;
+        this.codpayMethod = payMethod;
         this.fromDate = fromDate;
         this.toDate = toDate;
         this.amount = amount;
+        this.identification = identification;
     }
 
     public Integer getIdPolicy() {
@@ -118,37 +123,12 @@ public class Policy implements Serializable {
         this.amount = amount;
     }
 
-    public Products getCodProduct() {
-        return codProduct;
+    public String getIdentification() {
+        return identification;
     }
 
-    public void setCodProduct(Products codProduct) {
-        this.codProduct = codProduct;
-    }
-
-    public Client getCodClient() {
-        return codClient;
-    }
-
-    public void setCodClient(Client codClient) {
-        this.codClient = codClient;
-    }
-
-    public PayMethod getCodpayMethod() {
-        return codpayMethod;
-    }
-
-    public void setCodpayMethod(PayMethod codpayMethod) {
-        this.codpayMethod = codpayMethod;
-    }
-
-    @XmlTransient
-    public Collection<Receipt> getReceiptCollection() {
-        return receiptCollection;
-    }
-
-    public void setReceiptCollection(Collection<Receipt> receiptCollection) {
-        this.receiptCollection = receiptCollection;
+    public void setIdentification(String identification) {
+        this.identification = identification;
     }
 
     @Override
@@ -175,5 +155,29 @@ public class Policy implements Serializable {
     public String toString() {
         return "com.as.practica2.entity.Policy[ idPolicy=" + idPolicy + " ]";
     }
-    
+
+    public Products getCodProduct() {
+        return codProduct;
+    }
+
+    public void setCodProduct(Products codProduct) {
+        this.codProduct = codProduct;
+    }
+
+    public Client getCodClient() {
+        return codClient;
+    }
+
+    public void setCodClient(Client codClient) {
+        this.codClient = codClient;
+    }
+
+    public PayMethod getCodpayMethod() {
+        return codpayMethod;
+    }
+
+    public void setCodpayMethod(PayMethod codpayMethod) {
+        this.codpayMethod = codpayMethod;
+    }
+
 }

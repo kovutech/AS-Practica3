@@ -5,7 +5,9 @@
  */
 package com.as.practica2.sbEntity;
 
+import com.as.practica2.entity.Client;
 import com.as.practica2.entity.Policy;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -28,5 +30,15 @@ public class PolicyFacade extends AbstractFacade<Policy> {
     public PolicyFacade() {
         super(Policy.class);
     }
-    
+
+    public Policy findByIdentification(String s) {
+        List<Policy> policy = em.createNamedQuery("Policy.findByIdentification")
+                .setParameter("identification", s)
+                .getResultList();
+        if (policy.size() > 0) {
+            return policy.get(0);
+        } else {
+            return null;
+        }
+    }
 }
