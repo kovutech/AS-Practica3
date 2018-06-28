@@ -4,13 +4,17 @@
     Author     : Jorge
 --%>
 
+<%@page import="com.as.practica2.entity.User"%>
+<%@page import="com.as.practica2.sbEntity.PolicyFacade"%>
+<%@page import="com.as.practica2.entity.Client"%>
+<%@page import="com.as.practica2.entity.Policy"%>
+<%@page import="com.as.practica2.sbEntity.ClientFacade"%>
 <%@page import="com.as.practica2.singleton.StadisticsBean"%>
 <%@page import="com.as.practica2.singleton.LogBean"%>
 <%@page import="com.as.practica2.stateful.PolicyBean"%>
 <%@page import="com.as.practica2.stateless.SellRecommendation"%>
 <%@page import="com.as.practica2.stateless.CalculateDniLetter"%>
 <%@page import="com.as.practica2.stateless.ClientLevel"%>
-<%@page import="com.as.practica2.object.Policy"%>
 <%@page import="javax.naming.InitialContext"%>
 <%@page import="javax.ejb.EJB"%>
 <%@page import="java.lang.String"%>
@@ -37,21 +41,25 @@
     SellRecommendation sellRecomendation = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/SellRecommendation");
     CalculateDniLetter calculateDniLetter = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/CalculateDniLetter");
 
-    List<String> clientData = new ArrayList<String>();
-    clientData = (ArrayList) session.getAttribute("clientData");
-    PolicyBean aux = (PolicyBean) session.getAttribute("policyList");
-    List<Policy> policies = aux.getPolicyList(clientData.get(2), (String) session.getAttribute("user"));
+    PolicyFacade policyFacade = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/PolicyFacade");
+    ClientFacade clientFacade = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/ClientFacade");
 
-    out.print("<h2>Cliente: " + clientData.get(0) + " " + clientData.get(1) + " - Identificador: " + clientData.get(2) + calculateDniLetter.getDniLetter(clientData.get(2), (String) session.getAttribute("user")) + " - Nivel de cliente: " + clientLevel.getClientLevel(policies.size(), (String) session.getAttribute("user")) + "</h2>");
+    Client client = (Client) session.getAttribute("client");
+    List<Policy> policies = policyFacade.findByCodClient(client);
+
+    User user = (User) session.getAttribute("user");
+    out.print("<h2>Cliente: " + client.getName() + " " + client.getSurName() + " - Identificador: " + client.getIdentification() + calculateDniLetter.getDniLetter(client.getIdentification(), user.getName()) + " - Nivel de cliente: " + clientLevel.getClientLevel(policies.size(), user.getName()) + "</h2>");
+
     List<String> stringPolicies = new ArrayList<String>();
 
     for (Policy elem : policies) {
-        stringPolicies.add(elem.getType());
+        stringPolicies.add(elem.getCodProduct().getName());
     }
 
-    List<String> auxTypesInsurances = sellRecomendation.getRecommendation(stringPolicies, (String) session.getAttribute("user"));
+    List<String> auxTypesInsurances = sellRecomendation.getRecommendation(stringPolicies, user.getName());
 
-    out.print("<div class='textAux'>Al cliente se le deberían de ofrecer los siguientes productos.<div><BR>");
+    //out.print("<div class='textAux'>Al cliente se le deberían de ofrecer los siguientes productos.<div><BR>");
+    out.print("<h1 class='textAux'>Al cliente se le deberían de ofrecer los siguientes productos.</h1><BR>");
 
     out.print("<TABLE class='insurance'>");
     for (String elem : auxTypesInsurances) {

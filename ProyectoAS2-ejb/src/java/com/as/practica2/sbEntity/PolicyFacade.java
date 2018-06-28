@@ -7,6 +7,7 @@ package com.as.practica2.sbEntity;
 
 import com.as.practica2.entity.Client;
 import com.as.practica2.entity.Policy;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -39,6 +40,18 @@ public class PolicyFacade extends AbstractFacade<Policy> {
             return policy.get(0);
         } else {
             return null;
+        }
+    }
+    
+    public List<Policy> findByCodClient(Client c) {
+        List<Policy> policy = em.createNamedQuery("Policy.findByCodClient")
+                .setParameter("codClient", c)
+                .getResultList();
+        if (policy.size() > 0) {
+            return policy;
+        } else {
+            policy = new ArrayList<Policy>();
+            return policy;
         }
     }
 }

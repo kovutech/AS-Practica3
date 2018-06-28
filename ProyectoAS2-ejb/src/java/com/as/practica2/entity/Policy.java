@@ -34,7 +34,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Policy.findByFromDate", query = "SELECT p FROM Policy p WHERE p.fromDate = :fromDate")
     , @NamedQuery(name = "Policy.findByToDate", query = "SELECT p FROM Policy p WHERE p.toDate = :toDate")
     , @NamedQuery(name = "Policy.findByAmount", query = "SELECT p FROM Policy p WHERE p.amount = :amount")
-    , @NamedQuery(name = "Policy.findByIdentification", query = "SELECT p FROM Policy p WHERE p.identification = :identification")})
+    , @NamedQuery(name = "Policy.findByIdentification", query = "SELECT p FROM Policy p WHERE p.identification = :identification")
+    , @NamedQuery(name = "Policy.findByCodClient", query = "SELECT p FROM Policy p WHERE p.codClient = :codClient")})
 public class Policy implements Serializable {
 
     @JoinColumn(name = "cod_product", referencedColumnName = "id_product")
