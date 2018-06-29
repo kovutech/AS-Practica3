@@ -8,6 +8,7 @@ package com.as.practica2.sbEntity;
 import com.as.practica2.entity.Policy;
 import com.as.practica2.entity.Receipt;
 import com.as.practica2.entity.ReceiptState;
+import com.as.practica2.object.ReceiptQuery;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -33,6 +34,7 @@ public class ReceiptFacade extends AbstractFacade<Receipt> {
         super(Receipt.class);
     }
 
+    //JPQL
     public List<Receipt> ReceiptByCodPolicy(Policy policy) {
         List<Receipt> receipts = em.createNamedQuery("Receipt.findByCodPolicy")
                 .setParameter("codPolicy", policy)
@@ -73,11 +75,23 @@ public class ReceiptFacade extends AbstractFacade<Receipt> {
                 .setParameter("idReceipt", receipt.getIdReceipt())
                 .executeUpdate();
     }
-    
-    public void deleteReceipt(Receipt receipt){
+
+    public void deleteReceipt(Receipt receipt) {
         String query = "DELETE FROM Receipt where idReceipt= :idReceipt";
         em.createQuery(query)
                 .setParameter("idReceipt", receipt.getIdReceipt())
                 .executeUpdate();
+    }
+
+    public void searchReceiptsJPQL(String client, String type, String state, String order) {
+        String query = "SELECT  Client.name, Policy.identification, Products.name, Receipt.reference, Receipt.amount, ReceiptState.name, Receipt.chargeDate "
+                + "FROM Receipt "
+                + "INNER JOIN  Policy INNER JOIN Client INNER JOIN Products INNER JOIN ReceiptState ON "
+                + "Receipt.cod_policy = Policy.id_policy and "
+                + "Policy.cod_client = Client.id_client and "
+                + "Policy.cod_product=Products.id_product and "
+                + "Receipt.cod_state = ReceiptState.id_ReceiptState";
+        List<ReceiptQuery> results = em.createNativeQuery(query).getResultList();
+        System.out.println(results.get(0).getProductsName());
     }
 }
