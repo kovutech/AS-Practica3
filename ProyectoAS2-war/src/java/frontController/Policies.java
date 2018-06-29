@@ -100,7 +100,6 @@ public class Policies extends FrontCommand {
     }
 
     public void deleteClient() {
-
         if (request.getParameter("deletePolicy") != null) {
             try {
                 PolicyFacade policyFacade = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/PolicyFacade");

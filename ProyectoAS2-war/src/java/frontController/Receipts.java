@@ -5,15 +5,21 @@
  */
 package frontController;
 
-import com.as.practica2.object.Policy;
-import com.as.practica2.object.Receipt;
-import com.as.practica2.stateful.PolicyBean;
-import com.as.practica2.stateful.ReceiptBean;
+import com.as.practica2.entity.Policy;
+import com.as.practica2.entity.Receipt;
+import com.as.practica2.entity.ReceiptState;
+import com.as.practica2.sbEntity.PolicyFacade;
+import com.as.practica2.sbEntity.ReceiptFacade;
+import com.as.practica2.sbEntity.ReceiptStateFacade;
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpSession;
 
@@ -37,36 +43,55 @@ public class Receipts extends FrontCommand {
 
     public void chargeReceipt() {
         if (request.getParameter("charged") != null) {
-            HttpSession session = request.getSession(true);
-            String user = (String) session.getAttribute("user");
-            ReceiptBean receiptList = (ReceiptBean) session.getAttribute("receiptList");
-            String currentPolicy = (String) session.getAttribute("currentPolicy");
-            receiptList.setMap(receiptList.receiptPaid(currentPolicy, Integer.valueOf(request.getParameter("order")), user));
-            session.setAttribute("receiptList", receiptList);
-
-//            List<Receipt> receipts = receiptList.getReceiptList(currentPolicy, clientData.get(2));
-//            receipts.get(Integer.valueOf(request.getParameter("order"))).setPaid(true);
-//            Map<String,List<Receipt>> map = receiptList.getMap();
-//            map.put(currentPolicy, receipts);
-//            receiptList.setMap(map);
-//            session.setAttribute("receiptList", receiptList);
-        }
-    }
-
-    public void currentPolicy() {
-        HttpSession session = request.getSession(true);
-        if (request.getParameter("idPolicy") != null) {
-            session.setAttribute("currentPolicy", request.getParameter("idPolicy"));
+            try {
+                ReceiptFacade receiptFacade = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/ReceiptFacade");
+                Receipt receipt = receiptFacade.findByIdReceipt(Integer.parseInt(request.getParameter("charged")));
+                receiptFacade.chargedReceipt(receipt);
+            } catch (NamingException ex) {
+                Logger.getLogger(Receipts.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
     public void addReceipt() {
         if (request.getParameter("addReceipt") != null) {
-            HttpSession session = request.getSession(true);
-            ReceiptBean receiptList = (ReceiptBean) session.getAttribute("receiptList");
-            String currentPolicy = (String) session.getAttribute("currentPolicy");
-            receiptList.addReceipt(currentPolicy, new Receipt(request.getParameter("id"), request.getParameter("date"), request.getParameter("amount"), Boolean.valueOf(request.getParameter("paid"))), (String) session.getAttribute("user"));
-            session.setAttribute("receiptList", receiptList);
+            try {
+                HttpSession session = request.getSession(true);
+                Policy policy = (Policy) session.getAttribute("policy");
+
+                ReceiptStateFacade receiptStateFacade = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/ReceiptStateFacade");
+                ReceiptState receiptState = receiptStateFacade.findByName(request.getParameter("paid"));
+
+                ReceiptFacade receiptFacade = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/ReceiptFacade");
+                receiptFacade.addReceipt(policy, receiptState, parseDate(request.getParameter("date")), request.getParameter("amount"), request.getParameter("identification"));
+            } catch (NamingException ex) {
+                Logger.getLogger(Receipts.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+    }
+
+    public String parseDate(String s) {
+        try {
+            Date date = new SimpleDateFormat("yyyy-MM-dd").parse(s);
+            DateFormat dateF = new SimpleDateFormat("dd-MM-yyyy");
+            return dateF.format(date);
+        } catch (ParseException ex) {
+            Logger.getLogger(Policies.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    public void currentPolicy() {
+        if (request.getParameter("newReceipt") != null) {
+            try {
+                PolicyFacade policyFacade = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/PolicyFacade");
+                com.as.practica2.entity.Policy policy = policyFacade.findByIdentification(request.getParameter("idPolicy"));
+                HttpSession session = request.getSession(true);
+                session.setAttribute("policy", policy);
+            } catch (NamingException ex) {
+                Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 }

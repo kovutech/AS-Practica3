@@ -42,7 +42,7 @@ public class PolicyFacade extends AbstractFacade<Policy> {
             return null;
         }
     }
-    
+
     public List<Policy> findByCodClient(Client c) {
         List<Policy> policy = em.createNamedQuery("Policy.findByCodClient")
                 .setParameter("codClient", c)
@@ -50,8 +50,7 @@ public class PolicyFacade extends AbstractFacade<Policy> {
         if (policy.size() > 0) {
             return policy;
         } else {
-            policy = new ArrayList<Policy>();
-            return policy;
+            return new ArrayList<Policy>();
         }
     }
 }

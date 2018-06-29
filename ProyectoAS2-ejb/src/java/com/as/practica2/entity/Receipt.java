@@ -32,7 +32,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Receipt.findAll", query = "SELECT r FROM Receipt r")
     , @NamedQuery(name = "Receipt.findByIdReceipt", query = "SELECT r FROM Receipt r WHERE r.idReceipt = :idReceipt")
     , @NamedQuery(name = "Receipt.findByChargeDate", query = "SELECT r FROM Receipt r WHERE r.chargeDate = :chargeDate")
-    , @NamedQuery(name = "Receipt.findByAmount", query = "SELECT r FROM Receipt r WHERE r.amount = :amount")})
+    , @NamedQuery(name = "Receipt.findByAmount", query = "SELECT r FROM Receipt r WHERE r.amount = :amount")
+    , @NamedQuery(name = "Receipt.findByCodPolicy", query = "SELECT r FROM Receipt r WHERE r.codPolicy = :codPolicy")})
+
 public class Receipt implements Serializable {
 
     @Basic(optional = false)

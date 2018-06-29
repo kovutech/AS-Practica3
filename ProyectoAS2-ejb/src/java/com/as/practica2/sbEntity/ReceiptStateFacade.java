@@ -5,7 +5,10 @@
  */
 package com.as.practica2.sbEntity;
 
+import com.as.practica2.entity.Policy;
 import com.as.practica2.entity.ReceiptState;
+import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -28,5 +31,14 @@ public class ReceiptStateFacade extends AbstractFacade<ReceiptState> {
     public ReceiptStateFacade() {
         super(ReceiptState.class);
     }
-    
+
+    public ReceiptState findByName(String s) {
+        List<ReceiptState> receiptState = em.createNamedQuery("ReceiptState.findByName")
+                .setParameter("name", s)
+                .getResultList();
+        if (receiptState.size() > 0) {
+            return receiptState.get(0);
+        }
+        return null;
+    }
 }
