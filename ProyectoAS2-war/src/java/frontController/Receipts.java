@@ -32,6 +32,7 @@ public class Receipts extends FrontCommand {
     @Override
     public void process() {
         try {
+            deletePolicy();
             currentPolicy();
             addReceipt();
             chargeReceipt();
@@ -46,7 +47,9 @@ public class Receipts extends FrontCommand {
             try {
                 ReceiptFacade receiptFacade = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/ReceiptFacade");
                 Receipt receipt = receiptFacade.findByIdReceipt(Integer.parseInt(request.getParameter("charged")));
-                receiptFacade.chargedReceipt(receipt);
+                ReceiptStateFacade receiptStateFacade = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/ReceiptStateFacade");
+                ReceiptState receiptState = receiptStateFacade.findByName("Cobrado");
+                receiptFacade.chargedReceipt(receipt, receiptState);
             } catch (NamingException ex) {
                 Logger.getLogger(Receipts.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -91,6 +94,18 @@ public class Receipts extends FrontCommand {
                 session.setAttribute("policy", policy);
             } catch (NamingException ex) {
                 Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    public void deletePolicy() {
+        if (request.getParameter("deleteReceipt") != null) {
+            try {
+                ReceiptFacade receiptFacade = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/ReceiptFacade");
+                Receipt receipt = receiptFacade.findByIdReceipt(Integer.parseInt(request.getParameter("deleteReceipt")));
+                receiptFacade.deleteReceipt(receipt);
+            } catch (NamingException ex) {
+                Logger.getLogger(Receipts.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }

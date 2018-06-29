@@ -95,7 +95,7 @@
             %>
         <TD>Pendiente</TD>
         <TD>
-            <FORM action='FrontController'>
+            <FORM action='FrontController' method="post">
                 <INPUT type='hidden' name='command' value='Receipts'>
                 <INPUT type='hidden' name='charged' value="<%= elem.getIdReceipt()%>">
                 <INPUT type='submit' value='Cobrado' class='botonTable'>
@@ -105,6 +105,13 @@
             }
             count += 1;
         %>
+        <TD>
+            <FORM action='FrontController' method='post'>
+                <INPUT type='hidden' name='command' value='Receipts'>
+                <INPUT type='hidden' name='deleteReceipt' value='<%= elem.getIdReceipt()%>'>
+                <INPUT type='submit' value='Eliminar' class='botonTable'>
+            </FORM>
+        </TD>
     </TR>
     <%
         }

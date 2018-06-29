@@ -74,7 +74,7 @@ public class Policies extends FrontCommand {
     public void process() {
         try {
             checkClient();
-            deleteClient();
+            deletePolicy();
             addClient();
             forward("/policies.jsp");
         } catch (ServletException | IOException ex) {
@@ -99,7 +99,7 @@ public class Policies extends FrontCommand {
         }
     }
 
-    public void deleteClient() {
+    public void deletePolicy() {
         if (request.getParameter("deletePolicy") != null) {
             try {
                 PolicyFacade policyFacade = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/PolicyFacade");

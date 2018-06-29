@@ -66,19 +66,18 @@ public class ReceiptFacade extends AbstractFacade<Receipt> {
         return new Receipt();
     }
 
-    public void chargedReceipt(Receipt receipt) {
-        String query = "UPDATE Receipt SET cod_state = :cod_state WHERE id_receipt = :id_receipt";
+    public void chargedReceipt(Receipt receipt, ReceiptState receiptState) {
+        String query = "UPDATE Receipt SET codState = :codState WHERE idReceipt = :idReceipt";
         em.createQuery(query)
-                .setParameter("cod_state", 4)
-                .setParameter("id_receipt", receipt.getIdReceipt())
+                .setParameter("codState", receiptState)
+                .setParameter("idReceipt", receipt.getIdReceipt())
                 .executeUpdate();
-
-//        String query = "UPDATE Cart SET amount = :amount, price = :price WHERE id = :id AND name LIKE :name";
-//        em.createQuery(query)
-//                .setParameter("amount", amount + 1)
-//                .setParameter("price", price + precioOne)
-//                .setParameter("id", id)
-//                .setParameter("name", name)
-//                .executeUpdate();
+    }
+    
+    public void deleteReceipt(Receipt receipt){
+        String query = "DELETE FROM Receipt where idReceipt= :idReceipt";
+        em.createQuery(query)
+                .setParameter("idReceipt", receipt.getIdReceipt())
+                .executeUpdate();
     }
 }
