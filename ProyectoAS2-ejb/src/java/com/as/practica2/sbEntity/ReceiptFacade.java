@@ -10,11 +10,7 @@ import com.as.practica2.entity.Receipt;
 import com.as.practica2.entity.ReceiptState;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.Stateless;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -90,7 +86,9 @@ public class ReceiptFacade extends AbstractFacade<Receipt> {
     }
 
     public List<Receipt> searchReceiptsJPQL(String client, String type, String order, int page) {
-
+        if (page < 1) {
+            page = 1;
+        }
         String query = "SELECT r FROM Receipt r WHERE r.client LIKE :client and r.tipoPoliza LIKE :tipoPoliza order by r.client " + order;
 
         if (client.equals("")) {

@@ -53,7 +53,7 @@ public class ReceiptSearch extends FrontCommand {
     public void search() {
         if (request.getParameter("search") != null) {
             HttpSession session = request.getSession(true);
-            if (request.getParameter("pageAtras") != null || request.getParameter("pageAdelante") != null) {
+            if ((request.getParameter("pageAtras") != null) || (request.getParameter("pageAdelante") != null)) {
                 int currentPage = (Integer) session.getAttribute("currentPage");
                 if (request.getParameter("pageAtras") != null) {
                     currentPage -= 1;
@@ -78,7 +78,10 @@ public class ReceiptSearch extends FrontCommand {
                     }
                     order = request.getParameter("order");
                     String[] params = {client, type, order};
-                    session.setAttribute("searchParams", params);
+                    if (params != null) {
+                        session.setAttribute("searchParams", params);
+
+                    }
                     session.setAttribute("currentPage", 1);
                 } catch (NamingException ex) {
                     Logger.getLogger(ReceiptSearch.class.getName()).log(Level.SEVERE, null, ex);

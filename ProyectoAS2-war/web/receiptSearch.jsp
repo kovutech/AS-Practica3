@@ -92,32 +92,39 @@
             <%
                 if (request.getParameter("search") != null) {
                     List<Receipt> receipts = new ArrayList<Receipt>();
-                    if (request.getParameter("searchMode").equals("JPQL")) {
-                        ReceiptFacade receiptFacade = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/ReceiptFacade");
-                        String[] params = (String[]) session.getAttribute("searchParams");
-                        int currentPage = (Integer) session.getAttribute("currentPage");
-                        receipts = receiptFacade.searchReceiptsJPQL(params[0], params[1], params[2], currentPage);
+                    ReceiptFacade receiptFacade = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/ReceiptFacade");
+                    String[] params = (String[]) session.getAttribute("searchParams");
+                    int currentPage = (Integer) session.getAttribute("currentPage");
+                    System.out.println("Cliente : " + params[0] + "||| Tipo : " + params[1] + "||| Orden : " + params[2] + "||| Página : " + currentPage);
+
+                    if (request.getParameter("searchMode") != null) {
+                        if (request.getParameter("searchMode").equals("JPQL")) {
+
+                            receipts = receiptFacade.searchReceiptsJPQL(params[0], params[1], params[2], currentPage);
+                            //receipts = receiptFacade.searchReceiptsJPQL("", "", "", 1);
+                        } else {
+                            System.out.println("CRITERIA");
+                        }
                     } else {
-                        System.out.println("CRITERIA");
+                        receipts = receiptFacade.searchReceiptsJPQL(params[0], params[1], params[2], currentPage);
                     }
 
                     if (receipts.size() <= 0 || receipts == null || receipts.isEmpty()) {
                         System.out.println("NADA");
                     } else {
                         for (Receipt elem : receipts) {
-
             %>
-    
-        <TR>
-            <TD><%= elem.getClient()%></TD>
-            <TD><%= elem.getTipoPoliza()%></TD>
-            <TD><%= elem.getNPoliza()%></TD>
-            <TD><%= elem.getReference()%></TD>
-            <TD><%= elem.getChargeDate()%></TD>
-            <TD><%= elem.getAmount()%></TD>
-            <TD><%= elem.getCodState().getName()%></TD>
-        </TR>
-    
+
+    <TR>
+        <TD><%= elem.getClient()%></TD>
+        <TD><%= elem.getTipoPoliza()%></TD>
+        <TD><%= elem.getNPoliza()%></TD>
+        <TD><%= elem.getReference()%></TD>
+        <TD><%= elem.getChargeDate()%></TD>
+        <TD><%= elem.getAmount()%></TD>
+        <TD><%= elem.getCodState().getName()%></TD>
+    </TR>
+
     <%
                 }
             }
