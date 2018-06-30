@@ -6,7 +6,6 @@
 package com.as.practica2.sbEntity;
 
 import com.as.practica2.entity.PayMethod;
-import com.as.practica2.entity.Products;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;

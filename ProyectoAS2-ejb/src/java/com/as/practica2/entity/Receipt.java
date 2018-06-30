@@ -33,31 +33,12 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Receipt.findByIdReceipt", query = "SELECT r FROM Receipt r WHERE r.idReceipt = :idReceipt")
     , @NamedQuery(name = "Receipt.findByChargeDate", query = "SELECT r FROM Receipt r WHERE r.chargeDate = :chargeDate")
     , @NamedQuery(name = "Receipt.findByAmount", query = "SELECT r FROM Receipt r WHERE r.amount = :amount")
+    , @NamedQuery(name = "Receipt.findByReference", query = "SELECT r FROM Receipt r WHERE r.reference = :reference")
+    , @NamedQuery(name = "Receipt.findByClient", query = "SELECT r FROM Receipt r WHERE r.client = :client")
+    , @NamedQuery(name = "Receipt.findByTipoPoliza", query = "SELECT r FROM Receipt r WHERE r.tipoPoliza = :tipoPoliza")
+    , @NamedQuery(name = "Receipt.findByNPoliza", query = "SELECT r FROM Receipt r WHERE r.nPoliza = :nPoliza")
     , @NamedQuery(name = "Receipt.findByCodPolicy", query = "SELECT r FROM Receipt r WHERE r.codPolicy = :codPolicy")})
-
 public class Receipt implements Serializable {
-
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 45)
-    @Column(name = "client")
-    private String client;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 45)
-    @Column(name = "tipoPoliza")
-    private String tipoPoliza;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 45)
-    @Column(name = "nPoliza")
-    private String nPoliza;
-
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 45)
-    @Column(name = "reference")
-    private String reference;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -74,6 +55,26 @@ public class Receipt implements Serializable {
     @NotNull
     @Column(name = "amount")
     private float amount;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
+    @Column(name = "reference")
+    private String reference;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
+    @Column(name = "client")
+    private String client;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
+    @Column(name = "tipoPoliza")
+    private String tipoPoliza;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
+    @Column(name = "nPoliza")
+    private String nPoliza;
     @JoinColumn(name = "cod_policy", referencedColumnName = "id_policy")
     @ManyToOne(optional = false)
     private Policy codPolicy;
@@ -88,10 +89,14 @@ public class Receipt implements Serializable {
         this.idReceipt = idReceipt;
     }
 
-    public Receipt(Integer idReceipt, String chargeDate, float amount) {
+    public Receipt(Integer idReceipt, String chargeDate, float amount, String reference, String client, String tipoPoliza, String nPoliza) {
         this.idReceipt = idReceipt;
         this.chargeDate = chargeDate;
         this.amount = amount;
+        this.reference = reference;
+        this.client = client;
+        this.tipoPoliza = tipoPoliza;
+        this.nPoliza = nPoliza;
     }
 
     public Integer getIdReceipt() {
@@ -116,6 +121,38 @@ public class Receipt implements Serializable {
 
     public void setAmount(float amount) {
         this.amount = amount;
+    }
+
+    public String getReference() {
+        return reference;
+    }
+
+    public void setReference(String reference) {
+        this.reference = reference;
+    }
+
+    public String getClient() {
+        return client;
+    }
+
+    public void setClient(String client) {
+        this.client = client;
+    }
+
+    public String getTipoPoliza() {
+        return tipoPoliza;
+    }
+
+    public void setTipoPoliza(String tipoPoliza) {
+        this.tipoPoliza = tipoPoliza;
+    }
+
+    public String getNPoliza() {
+        return nPoliza;
+    }
+
+    public void setNPoliza(String nPoliza) {
+        this.nPoliza = nPoliza;
     }
 
     public Policy getCodPolicy() {
@@ -159,36 +196,4 @@ public class Receipt implements Serializable {
         return "com.as.practica2.entity.Receipt[ idReceipt=" + idReceipt + " ]";
     }
 
-    public String getReference() {
-        return reference;
-    }
-
-    public void setReference(String reference) {
-        this.reference = reference;
-    }
-
-    public String getClient() {
-        return client;
-    }
-
-    public void setClient(String client) {
-        this.client = client;
-    }
-
-    public String getTipoPoliza() {
-        return tipoPoliza;
-    }
-
-    public void setTipoPoliza(String tipoPoliza) {
-        this.tipoPoliza = tipoPoliza;
-    }
-
-    public String getNPoliza() {
-        return nPoliza;
-    }
-
-    public void setNPoliza(String nPoliza) {
-        this.nPoliza = nPoliza;
-    }
-    
 }

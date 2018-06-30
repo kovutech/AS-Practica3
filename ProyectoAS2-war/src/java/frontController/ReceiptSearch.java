@@ -51,33 +51,38 @@ public class ReceiptSearch extends FrontCommand {
     }
 
     public void search() {
-        HttpSession session = request.getSession(true);
-        List<Receipt> receipts = new ArrayList<Receipt>();
         if (request.getParameter("search") != null) {
-            try {
-                String client = "";
-                String type = "";
-                String state = "";
-                String order = "";
+            HttpSession session = request.getSession(true);
+            if (request.getParameter("pageAtras") != null || request.getParameter("pageAdelante") != null) {
+                int currentPage = (Integer) session.getAttribute("currentPage");
+                if (request.getParameter("pageAtras") != null) {
+                    currentPage -= 1;
+                } else {
+                    currentPage += 1;
+                }
+                session.setAttribute("currentPage", currentPage);
+            } else {
+                List<Receipt> receipts = new ArrayList<Receipt>();
+                try {
+                    String client = "";
+                    String type = "";
+                    String order = "";
 
-                ReceiptFacade receiptFacade = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/ReceiptFacade");
-                if (request.getParameter("client") != null) {
-                    client = request.getParameter("client");
+                    ReceiptFacade receiptFacade = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/ReceiptFacade");
+                    if (request.getParameter("client") != null) {
+                        client = request.getParameter("client");
+                    }
+                    String aux = request.getParameter("chkType");
+                    if (aux != null && aux.length() != 0) {
+                        type = request.getParameter("type");
+                    }
+                    order = request.getParameter("order");
+                    String[] params = {client, type, order};
+                    session.setAttribute("searchParams", params);
+                    session.setAttribute("currentPage", 1);
+                } catch (NamingException ex) {
+                    Logger.getLogger(ReceiptSearch.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                String aux = request.getParameter("chkType");
-                if (aux != null && aux.length() != 0) {
-                    type = request.getParameter("type");
-                }
-                aux = request.getParameter("chkState");
-                if (aux != null && aux.length() != 0) {
-                    state = request.getParameter("state");
-                }
-                order = request.getParameter("order");
-                String[] params = {client, type, state, order};
-                session.setAttribute("searchParams", params);
-                
-            } catch (NamingException ex) {
-                Logger.getLogger(ReceiptSearch.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }

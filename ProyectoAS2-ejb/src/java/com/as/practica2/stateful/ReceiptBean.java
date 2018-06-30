@@ -6,7 +6,7 @@
 package com.as.practica2.stateful;
 
 import com.as.practica2.object.Policy;
-import com.as.practica2.object.Receipt;
+import com.as.practica2.object.ReceiptA;;
 import com.as.practica2.singleton.LogBean;
 import com.as.practica2.singleton.StadisticsBean;
 import java.io.File;
@@ -45,73 +45,73 @@ public class ReceiptBean {
     private LogBean log;
     private StadisticsBean stadistics;
 
-    Map<String, List<Receipt>> map = new HashMap<String, List<Receipt>>();
+    Map<String, List<ReceiptA>> map = new HashMap<String, List<ReceiptA>>();
 
     @PostConstruct
-    public void ReceiptBean() {
+    public void ReceiptABean() {
         try {
             file = new File("C:\\Users\\Jorge\\Desktop\\AS\\Practica2\\stateful4.txt");
             fWritting = new FileWriter(file, true);
             writing = new PrintWriter(fWritting);
-            writing.println("ReceiptBean::PostConstruct::ReceiptBean");
+            writing.println("ReceiptABean::PostConstruct::ReceiptABean");
             close();
             print = true;
             log = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/LogBean");
-            log.addFuntion("ReceiptBean::PostConstruct");
+            log.addFuntion("ReceiptABean::PostConstruct");
             stadistics = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/StadisticsBean");
-            stadistics.addComponent("ReceiptBean");
+            stadistics.addComponent("ReceiptABean");
 
         } catch (IOException | NamingException ex) {
-            log.addFuntion("ReceiptBean::Excepción PostConstruct");
+            log.addFuntion("ReceiptABean::Excepción PostConstruct");
             Logger.getLogger(ReceiptBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public Map<String, List<Receipt>> receiptPaid(String currentPolicy, int order, String user) {
+    public Map<String, List<ReceiptA>> receiptPaid(String currentPolicy, int order, String user) {
         stadistics.addComponentUsers(user);
-        log.addFuntion("ReceiptBean::receiptPaid");
-        stadistics.addComponent("ReceiptBean");
-        setText("ReceiptBean", "receiptPaid", user);
-        List<Receipt> receipts = getReceiptList(currentPolicy, user);
+        log.addFuntion("ReceiptABean::receiptPaid");
+        stadistics.addComponent("ReceiptABean");
+        setText("ReceiptABean", "receiptPaid", user);
+        List<ReceiptA> receipts = getReceiptAList(currentPolicy, user);
         receipts.get(order).setPaid(true);
         map.put(currentPolicy, receipts);
         return map;
     }
 
-    public void addReceipt(String id, Receipt receiptAux, String user) {
+    public void addReceiptA(String id, ReceiptA receiptAux, String user) {
         stadistics.addComponentUsers(user);
-        log.addFuntion("ReceiptBean::addReceipt");
-        stadistics.addComponent("ReceiptBean");
-        setText("ReceiptBean", "addReceipt", user);
-        List<Receipt> aux;
+        log.addFuntion("ReceiptABean::addReceiptA");
+        stadistics.addComponent("ReceiptABean");
+        setText("ReceiptABean", "addReceiptA", user);
+        List<ReceiptA> aux;
         if (map.containsKey(id)) {
             aux = map.get(id);
         } else {
-            aux = new ArrayList<Receipt>();
+            aux = new ArrayList<ReceiptA>();
         }
         aux.add(receiptAux);
         map.put(id, aux);
     }
 
-    public List<Receipt> getReceiptList(String id, String user) {
+    public List<ReceiptA> getReceiptAList(String id, String user) {
         stadistics.addComponentUsers(user);
-        log.addFuntion("ReceiptBean::getReceiptList");
-        stadistics.addComponent("ReceiptBean");
-        setText("ReceiptBean", "getReceiptList", user);
-        List<Receipt> aux;
+        log.addFuntion("ReceiptABean::getReceiptAList");
+        stadistics.addComponent("ReceiptABean");
+        setText("ReceiptABean", "getReceiptAList", user);
+        List<ReceiptA> aux;
         if (map.containsKey(id)) {
             aux = map.get(id);
         } else {
-            aux = new ArrayList<Receipt>();
+            aux = new ArrayList<ReceiptA>();
         }
         return aux;
     }
 
-    public Map<String, List<Receipt>> getMap() {
+    public Map<String, List<ReceiptA>> getMap() {
         return map;
     }
 
-    public void setMap(Map<String, List<Receipt>> aux) {
+    public void setMap(Map<String, List<ReceiptA>> aux) {
         map = aux;
     }
 
@@ -125,7 +125,7 @@ public class ReceiptBean {
                 writing.println(mensaje);
                 close();
             } catch (IOException ex) {
-                log.addFuntion("ReceiptBean::Error al escribir en el documento.");
+                log.addFuntion("ReceiptABean::Error al escribir en el documento.");
                 Logger.getLogger(ReceiptBean.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
@@ -133,31 +133,31 @@ public class ReceiptBean {
 
     @PostActivate
     public void postActivate() {
-        stadistics.addComponent("ReceiptBean");
-        log.addFuntion("ReceiptBean::PostActivate");
-        setText("ReceiptBean", "PostActivate", "postActivate");
+        stadistics.addComponent("ReceiptABean");
+        log.addFuntion("ReceiptABean::PostActivate");
+        setText("ReceiptABean", "PostActivate", "postActivate");
     }
 
     @PrePassivate
     public void prePassivate() {
-        stadistics.addComponent("ReceiptBean");
-        log.addFuntion("ReceiptBean::PrePassivate");
-        setText("ReceiptBean", "PrePassivate", "prePassivate");
+        stadistics.addComponent("ReceiptABean");
+        log.addFuntion("ReceiptABean::PrePassivate");
+        setText("ReceiptABean", "PrePassivate", "prePassivate");
     }
 
     @PreDestroy
     public void preDestroy() {
-        stadistics.addComponent("ReceiptBean");
-        log.addFuntion("ReceiptBean::PreDestroy");
-        setText("ReceiptBean", "PreDestroy", "preDestroy");
+        stadistics.addComponent("ReceiptABean");
+        log.addFuntion("ReceiptABean::PreDestroy");
+        setText("ReceiptABean", "PreDestroy", "preDestroy");
 
     }
 
     @Remove
     public void remove() {
-        stadistics.addComponent("ReceiptBean");
-        log.addFuntion("ReceiptBean::Remove");
-        setText("ReceiptBean", "Remove", "remove");
+        stadistics.addComponent("ReceiptABean");
+        log.addFuntion("ReceiptABean::Remove");
+        setText("ReceiptABean", "Remove", "remove");
         close();
     }
 
@@ -167,7 +167,7 @@ public class ReceiptBean {
             writing.close();
 
         } catch (IOException ex) {
-            log.addFuntion("ReceiptBean::Excepción cerrando el documento");
+            log.addFuntion("ReceiptABean::Excepción cerrando el documento");
             Logger.getLogger(ReceiptBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

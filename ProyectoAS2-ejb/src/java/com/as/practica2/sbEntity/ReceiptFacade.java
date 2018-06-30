@@ -10,10 +10,13 @@ import com.as.practica2.entity.Receipt;
 import com.as.practica2.entity.ReceiptState;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.Stateless;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -86,9 +89,23 @@ public class ReceiptFacade extends AbstractFacade<Receipt> {
                 .executeUpdate();
     }
 
-    public List<Receipt> searchReceiptsJPQL(String client, String type, String state, String order) {
-        String query = "SELECT * FROM Receipt";
-        List<Receipt> results = em.createNativeQuery(query).getResultList();
+    public List<Receipt> searchReceiptsJPQL(String client, String type, String order, int page) {
+
+        String query = "SELECT r FROM Receipt r WHERE r.client LIKE :client and r.tipoPoliza LIKE :tipoPoliza order by r.client " + order;
+
+        if (client.equals("")) {
+            client = "%";
+        }
+        if (type.equals("")) {
+            type = "%";
+        }
+
+        List<Receipt> results = em.createQuery(query)
+                .setParameter("client", client)
+                .setParameter("tipoPoliza", type)
+                .setFirstResult((page - 1) * 5)
+                .setMaxResults(5)
+                .getResultList();
         if (results.size() > 0) {
             return results;
         } else {

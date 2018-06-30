@@ -31,7 +31,7 @@ public class PolicyFacade extends AbstractFacade<Policy> {
     public PolicyFacade() {
         super(Policy.class);
     }
-
+    
     public Policy findByIdentification(String s) {
         List<Policy> policy = em.createNamedQuery("Policy.findByIdentification")
                 .setParameter("identification", s)
@@ -47,10 +47,12 @@ public class PolicyFacade extends AbstractFacade<Policy> {
         List<Policy> policy = em.createNamedQuery("Policy.findByCodClient")
                 .setParameter("codClient", c)
                 .getResultList();
+        System.out.println(policy.getClass().getName());
         if (policy.size() > 0) {
             return policy;
         } else {
             return new ArrayList<Policy>();
         }
     }
+    
 }

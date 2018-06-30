@@ -41,9 +41,6 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Client.findByTelephone", query = "SELECT c FROM Client c WHERE c.telephone = :telephone")})
 public class Client implements Serializable {
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codClient")
-    private Collection<Policy> policyCollection;
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -70,6 +67,8 @@ public class Client implements Serializable {
     @Size(min = 1, max = 9)
     @Column(name = "telephone")
     private String telephone;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codClient")
+    private Collection<Policy> policyCollection;
     @JoinColumn(name = "cod_user", referencedColumnName = "id_user")
     @ManyToOne(optional = false)
     private User codUser;
@@ -81,7 +80,7 @@ public class Client implements Serializable {
         this.idClient = idClient;
     }
 
-    public Client(Integer idClient, User codUser, String identification, String name, String surName, String telephone) {
+   public Client(Integer idClient, User codUser, String identification, String name, String surName, String telephone) {
         this.idClient = idClient;
         this.codUser = codUser;
         this.identification = identification;
@@ -130,6 +129,15 @@ public class Client implements Serializable {
         this.telephone = telephone;
     }
 
+    @XmlTransient
+    public Collection<Policy> getPolicyCollection() {
+        return policyCollection;
+    }
+
+    public void setPolicyCollection(Collection<Policy> policyCollection) {
+        this.policyCollection = policyCollection;
+    }
+
     public User getCodUser() {
         return codUser;
     }
@@ -161,15 +169,6 @@ public class Client implements Serializable {
     @Override
     public String toString() {
         return "com.as.practica2.entity.Client[ idClient=" + idClient + " ]";
-    }
-
-    @XmlTransient
-    public Collection<Policy> getPolicyCollection() {
-        return policyCollection;
-    }
-
-    public void setPolicyCollection(Collection<Policy> policyCollection) {
-        this.policyCollection = policyCollection;
     }
     
 }

@@ -29,7 +29,7 @@ public class UserFacade extends AbstractFacade<User> {
     public UserFacade() {
         super(User.class);
     }
-
+    
     public User findByName(String s) {
         List<User> user = em.createNamedQuery("User.findByName")
                 .setParameter("name", s)
@@ -40,5 +40,4 @@ public class UserFacade extends AbstractFacade<User> {
             return null;
         }
     }
-
 }

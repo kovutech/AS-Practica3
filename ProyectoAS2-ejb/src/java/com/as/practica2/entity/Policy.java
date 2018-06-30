@@ -42,19 +42,6 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Policy.findByCodClient", query = "SELECT p FROM Policy p WHERE p.codClient = :codClient")})
 public class Policy implements Serializable {
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codPolicy")
-    private Collection<Receipt> receiptCollection;
-
-    @JoinColumn(name = "cod_product", referencedColumnName = "id_product")
-    @ManyToOne(optional = false)
-    private Products codProduct;
-    @JoinColumn(name = "cod_client", referencedColumnName = "id_client")
-    @ManyToOne(optional = false)
-    private Client codClient;
-    @JoinColumn(name = "cod_payMethod", referencedColumnName = "id_payMethod")
-    @ManyToOne(optional = false)
-    private PayMethod codpayMethod;
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -80,6 +67,17 @@ public class Policy implements Serializable {
     @Size(min = 1, max = 45)
     @Column(name = "identification")
     private String identification;
+    @JoinColumn(name = "cod_product", referencedColumnName = "id_product")
+    @ManyToOne(optional = false)
+    private Products codProduct;
+    @JoinColumn(name = "cod_client", referencedColumnName = "id_client")
+    @ManyToOne(optional = false)
+    private Client codClient;
+    @JoinColumn(name = "cod_payMethod", referencedColumnName = "id_payMethod")
+    @ManyToOne(optional = false)
+    private PayMethod codpayMethod;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codPolicy")
+    private Collection<Receipt> receiptCollection;
 
     public Policy() {
     }
@@ -139,31 +137,6 @@ public class Policy implements Serializable {
         this.identification = identification;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (idPolicy != null ? idPolicy.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Policy)) {
-            return false;
-        }
-        Policy other = (Policy) object;
-        if ((this.idPolicy == null && other.idPolicy != null) || (this.idPolicy != null && !this.idPolicy.equals(other.idPolicy))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "com.as.practica2.entity.Policy[ idPolicy=" + idPolicy + " ]";
-    }
-
     public Products getCodProduct() {
         return codProduct;
     }
@@ -195,6 +168,31 @@ public class Policy implements Serializable {
 
     public void setReceiptCollection(Collection<Receipt> receiptCollection) {
         this.receiptCollection = receiptCollection;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (idPolicy != null ? idPolicy.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Policy)) {
+            return false;
+        }
+        Policy other = (Policy) object;
+        if ((this.idPolicy == null && other.idPolicy != null) || (this.idPolicy != null && !this.idPolicy.equals(other.idPolicy))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "com.as.practica2.entity.Policy[ idPolicy=" + idPolicy + " ]";
     }
 
 }

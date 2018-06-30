@@ -5,7 +5,6 @@
  */
 package com.as.practica2.sbEntity;
 
-import com.as.practica2.entity.Client;
 import com.as.practica2.entity.Products;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -30,7 +29,7 @@ public class ProductsFacade extends AbstractFacade<Products> {
     public ProductsFacade() {
         super(Products.class);
     }
-
+    
     public Products findByIdProduct(int n) {
         List<Products> products = em.createNamedQuery("Products.findByIdProduct")
                 .setParameter("idProduct", n)
@@ -41,5 +40,5 @@ public class ProductsFacade extends AbstractFacade<Products> {
             return null;
         }
     }
-
+    
 }

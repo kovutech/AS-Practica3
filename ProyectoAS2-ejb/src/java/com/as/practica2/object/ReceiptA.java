@@ -9,14 +9,14 @@ package com.as.practica2.object;
  *
  * @author Jorge
  */
-public class Receipt {
+public class ReceiptA {
 
     String reference;
     String date;
     String amount;
     boolean paid;
 
-    public Receipt(String reference, String date, String amount, boolean paid) {
+    public ReceiptA(String reference, String date, String amount, boolean paid) {
         this.reference = reference;
         this.date = date;
         this.amount = amount;

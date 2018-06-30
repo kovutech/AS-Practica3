@@ -47,13 +47,12 @@
 <FORM action='FrontController' method='get'>
     <TABLE border=1 class='center'>
         <TR>
-            <TD colspan='4'>BUSCAR RECIBOS</TD>
+            <TD colspan='3'>BUSCAR RECIBOS</TD>
             <TD colspan='2'>MODO</TD>
         </TR>
         <TR>
             <TH width="50%"><B>Nombre de cliente</B></TH>
             <TH width="10%"><B>Tipo de póliza<input type="checkbox" name="chkType" value="1"></B></TH>
-            <TH width="10%"><B>Estado<input type="checkbox" name="chkState" value="1"></B></TH>
             <TH width="10%"><B>Orden</B></TH>
             <TH width="10%"><B>JPQL <input type="radio" name="searchMode" value="JPQL" checked="true"></B></TH>
             <TH width="10%"><B>CRITERIA API<input type="radio" name="searchMode" value="CRITERIA"></B></TH>
@@ -69,20 +68,7 @@
                     List<Products> products = productsFacade.findAll();
                     for (Products elem : products) {
                 %>
-                <option value="<%= elem.getIdProduct()%>"><%= elem.getName()%></option>");
-                <%
-                    }
-                %>
-            </select>
-        </TD>
-        <TD>
-            <select name="state" required="true">
-                <%
-                    ReceiptStateFacade receiptStateFacade = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/ReceiptStateFacade");
-                    List<ReceiptState> receiptState = receiptStateFacade.findAll();
-                    for (ReceiptState elem : receiptState) {
-                %>
-                <option value="<%= elem.getIdReceiptState()%>"><%= elem.getName()%></option>");
+                <option value="<%=  elem.getName()%>"><%= elem.getName()%></option>");
                 <%
                     }
                 %>
@@ -104,35 +90,60 @@
     <TR><TD colspan='8'>LISTADO DE RECIBOS</TD></TR>
     <TR><TD>Cliente</TD><TD>Tipo de Póliza</TD><TD>Nº póliza</TD><TD>Referencia</TD><TD>Fecha de efecto</TD><TD>Importe</TD><TD>Estado</TD></TR>
             <%
-                    if (request.getParameter("search") != null) {
-                        List<Receipt> receipts = new ArrayList<Receipt>();
-                        if (request.getParameter("searchMode").equals("JPQL")) {
-                            ReceiptFacade receiptFacade = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/ReceiptFacade");
-                            //String[] params = (String[]) session.getAttribute("searchParams");
-                            receipts = receiptFacade.searchReceiptsJPQL("", "", "", "");
-                        } else {
-                            System.out.println("CRITERIA");
-                        }
-                        
-                        if (receipts.size() <= 0 || receipts == null || receipts.isEmpty()) {
-                            System.out.println("NADA");
-                        } else {
-                        for (Receipt elem : receipts) {
-                                System.out.println(elem.getClient());
-                            }
-                        }
-                         
-
+                if (request.getParameter("search") != null) {
+                    List<Receipt> receipts = new ArrayList<Receipt>();
+                    if (request.getParameter("searchMode").equals("JPQL")) {
+                        ReceiptFacade receiptFacade = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/ReceiptFacade");
+                        String[] params = (String[]) session.getAttribute("searchParams");
+                        int currentPage = (Integer) session.getAttribute("currentPage");
+                        receipts = receiptFacade.searchReceiptsJPQL(params[0], params[1], params[2], currentPage);
+                    } else {
+                        System.out.println("CRITERIA");
                     }
 
+                    if (receipts.size() <= 0 || receipts == null || receipts.isEmpty()) {
+                        System.out.println("NADA");
+                    } else {
+                        for (Receipt elem : receipts) {
+
             %>
+    
+        <TR>
+            <TD><%= elem.getClient()%></TD>
+            <TD><%= elem.getTipoPoliza()%></TD>
+            <TD><%= elem.getNPoliza()%></TD>
+            <TD><%= elem.getReference()%></TD>
+            <TD><%= elem.getChargeDate()%></TD>
+            <TD><%= elem.getAmount()%></TD>
+            <TD><%= elem.getCodState().getName()%></TD>
+        </TR>
+    
+    <%
+                }
+            }
+        }
+    %>
 </TABLE>
 <TABLE border="1"class='center'>
     <tr>
         <td width="90%"></td>
-        <td width="5%"><INPUT type="submit" value="<"</td>
-        <td width="5%"><INPUT type="submit" value=">"</td>
-    </tr>
+    <FORM action='FrontController' method='get'>
+        <INPUT type="hidden" name="command" value="ReceiptSearch">
+        <INPUT type="hidden" name="search" value="1">
+        <INPUT type="hidden" name="pageAtras" value="1">
+        <td width="5%">
+            <INPUT type="submit" value="<">
+        </td>
+    </FORM>
+    <FORM action='FrontController' method='get'>
+        <INPUT type="hidden" name="command" value="ReceiptSearch">
+        <INPUT type="hidden" name="search" value="1">
+        <INPUT type="hidden" name="pageAdelante" value="1">
+        <td width="5%">
+            <INPUT type="submit" value=">">
+        </td>
+    </FORM>
+</tr>
 </TABLE>
 
 <jsp:include page="footer.jsp"/>

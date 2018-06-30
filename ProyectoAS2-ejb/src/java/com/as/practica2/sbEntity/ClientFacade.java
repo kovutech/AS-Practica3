@@ -29,7 +29,7 @@ public class ClientFacade extends AbstractFacade<Client> {
     public ClientFacade() {
         super(Client.class);
     }
-
+    
     public Client findByIdentification(String s) {
         List<Client> client = em.createNamedQuery("Client.findByIdentification")
                 .setParameter("identification", s)
@@ -40,4 +40,5 @@ public class ClientFacade extends AbstractFacade<Client> {
             return null;
         }
     }
+    
 }

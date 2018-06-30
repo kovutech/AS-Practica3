@@ -112,5 +112,5 @@ public class Products implements Serializable {
     public String toString() {
         return "com.as.practica2.entity.Products[ idProduct=" + idProduct + " ]";
     }
-    
+
 }
