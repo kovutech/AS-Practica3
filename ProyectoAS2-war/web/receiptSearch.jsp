@@ -4,6 +4,7 @@
     Author     : Jorge
 --%>
 
+<%@page import="frontController.ReceiptSearch"%>
 <%@page import="com.as.practica2.entity.ReceiptState"%>
 <%@page import="com.as.practica2.sbEntity.ReceiptStateFacade"%>
 <%@page import="com.as.practica2.entity.Products"%>
@@ -102,13 +103,36 @@
 <TABLE border=1 class='center'>
     <TR><TD colspan='8'>LISTADO DE RECIBOS</TD></TR>
     <TR><TD>Cliente</TD><TD>Tipo de Póliza</TD><TD>Nº póliza</TD><TD>Referencia</TD><TD>Fecha de efecto</TD><TD>Importe</TD><TD>Estado</TD></TR>
+            <%
+                    if (request.getParameter("search") != null) {
+                        List<Receipt> receipts = new ArrayList<Receipt>();
+                        if (request.getParameter("searchMode").equals("JPQL")) {
+                            ReceiptFacade receiptFacade = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/ReceiptFacade");
+                            //String[] params = (String[]) session.getAttribute("searchParams");
+                            receipts = receiptFacade.searchReceiptsJPQL("", "", "", "");
+                        } else {
+                            System.out.println("CRITERIA");
+                        }
+                        
+                        if (receipts.size() <= 0 || receipts == null || receipts.isEmpty()) {
+                            System.out.println("NADA");
+                        } else {
+                        for (Receipt elem : receipts) {
+                                System.out.println(elem.getClient());
+                            }
+                        }
+                         
+
+                    }
+
+            %>
 </TABLE>
 <TABLE border="1"class='center'>
-        <tr>
-            <td width="90%"></td>
-            <td width="5%"><INPUT type="submit" value="<"</td>
-            <td width="5%"><INPUT type="submit" value=">"</td>
-        </tr>
-    </TABLE>
+    <tr>
+        <td width="90%"></td>
+        <td width="5%"><INPUT type="submit" value="<"</td>
+        <td width="5%"><INPUT type="submit" value=">"</td>
+    </tr>
+</TABLE>
 
 <jsp:include page="footer.jsp"/>

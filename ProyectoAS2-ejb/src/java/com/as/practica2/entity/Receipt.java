@@ -40,6 +40,22 @@ public class Receipt implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
+    @Column(name = "client")
+    private String client;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
+    @Column(name = "tipoPoliza")
+    private String tipoPoliza;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
+    @Column(name = "nPoliza")
+    private String nPoliza;
+
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
     @Column(name = "reference")
     private String reference;
 
@@ -149,6 +165,30 @@ public class Receipt implements Serializable {
 
     public void setReference(String reference) {
         this.reference = reference;
+    }
+
+    public String getClient() {
+        return client;
+    }
+
+    public void setClient(String client) {
+        this.client = client;
+    }
+
+    public String getTipoPoliza() {
+        return tipoPoliza;
+    }
+
+    public void setTipoPoliza(String tipoPoliza) {
+        this.tipoPoliza = tipoPoliza;
+    }
+
+    public String getNPoliza() {
+        return nPoliza;
+    }
+
+    public void setNPoliza(String nPoliza) {
+        this.nPoliza = nPoliza;
     }
     
 }

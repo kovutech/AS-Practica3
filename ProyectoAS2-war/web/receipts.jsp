@@ -46,9 +46,9 @@
         <TR>
         <INPUT type='hidden' name='command' value='Receipts'>
         <INPUT type='hidden' name='addReceipt' value='1'>
-        <TD><INPUT type='text' name='identification' value='' placeholder='reference' ></TD>
-        <TD><INPUT type='date' name='date' value='' placeholder='F. efecto' ></TD>
-        <TD><INPUT type='number' name='amount' value='' placeholder='Importe' step='any' min='0'></TD>
+        <TD><INPUT type='text' name='identification' value='' placeholder='reference'required="true" maxlength='15'></TD>
+        <TD><INPUT type='date' name='date' value='' placeholder='F. efecto'  required="true"></TD>
+        <TD><INPUT type='number' name='amount' value='' placeholder='Importe' step='any' min='0' required="true"></TD>
         <TD> <select name="paid">
                 <option value="Cobrado">Cobrado</option>
                 <option value="Pendiente">Pendiente</option>

@@ -8,12 +8,12 @@ package com.as.practica2.sbEntity;
 import com.as.practica2.entity.Policy;
 import com.as.practica2.entity.Receipt;
 import com.as.practica2.entity.ReceiptState;
-import com.as.practica2.object.ReceiptQuery;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -46,8 +46,8 @@ public class ReceiptFacade extends AbstractFacade<Receipt> {
     }
 
     //receiptFacade.addReceipt(policy,receiptState,request.getParameter("amount"),request.getParameter("identification"));
-    public void addReceipt(Policy policy, ReceiptState receiptState, String date, String amount, String identification) {
-        String query = "INSERT INTO Receipt VALUES(?,?,?,?,?,?)";
+    public void addReceipt(Policy policy, ReceiptState receiptState, String date, String amount, String identification, String client, String policyType, String nPolicy) {
+        String query = "INSERT INTO Receipt VALUES(?,?,?,?,?,?,?,?,?)";
         em.createNativeQuery(query)
                 .setParameter(1, null)
                 .setParameter(2, policy.getIdPolicy())
@@ -55,6 +55,9 @@ public class ReceiptFacade extends AbstractFacade<Receipt> {
                 .setParameter(4, date)
                 .setParameter(5, amount)
                 .setParameter(6, identification)
+                .setParameter(7, client)
+                .setParameter(8, policyType)
+                .setParameter(9, nPolicy)
                 .executeUpdate();
     }
 
@@ -83,15 +86,13 @@ public class ReceiptFacade extends AbstractFacade<Receipt> {
                 .executeUpdate();
     }
 
-    public void searchReceiptsJPQL(String client, String type, String state, String order) {
-        String query = "SELECT  Client.name, Policy.identification, Products.name, Receipt.reference, Receipt.amount, ReceiptState.name, Receipt.chargeDate "
-                + "FROM Receipt "
-                + "INNER JOIN  Policy INNER JOIN Client INNER JOIN Products INNER JOIN ReceiptState ON "
-                + "Receipt.cod_policy = Policy.id_policy and "
-                + "Policy.cod_client = Client.id_client and "
-                + "Policy.cod_product=Products.id_product and "
-                + "Receipt.cod_state = ReceiptState.id_ReceiptState";
-        List<ReceiptQuery> results = em.createNativeQuery(query).getResultList();
-        System.out.println(results.get(0).getProductsName());
+    public List<Receipt> searchReceiptsJPQL(String client, String type, String state, String order) {
+        String query = "SELECT * FROM Receipt";
+        List<Receipt> results = em.createNativeQuery(query).getResultList();
+        if (results.size() > 0) {
+            return results;
+        } else {
+            return new ArrayList<Receipt>();
+        }
     }
 }

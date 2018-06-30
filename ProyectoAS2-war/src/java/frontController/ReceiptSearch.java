@@ -5,17 +5,23 @@
  */
 package frontController;
 
+import com.as.practica2.entity.Receipt;
 import com.as.practica2.sbEntity.ReceiptFacade;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -45,39 +51,33 @@ public class ReceiptSearch extends FrontCommand {
     }
 
     public void search() {
-        String client = "";
-        String type = "";
-        String state = "";
-        String order = "";
-
-        try {
-            ReceiptFacade receiptFacade = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/ReceiptFacade");
-        } catch (NamingException ex) {
-            Logger.getLogger(ReceiptSearch.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
+        HttpSession session = request.getSession(true);
+        List<Receipt> receipts = new ArrayList<Receipt>();
         if (request.getParameter("search") != null) {
-            ReceiptFacade receiptFacade = null;
-            if (request.getParameter("client") != null) {
-                client = request.getParameter("client");
-            }
-            String aux = request.getParameter("chkType");
-            if (aux != null && aux.length() != 0) {
-                type = request.getParameter("type");
-            }
-            aux = request.getParameter("chkState");
-            if (aux != null && aux.length() != 0) {
-                state = request.getParameter("state");
-            }
-            order = request.getParameter("order");
-            System.out.println("Cliente: " + client);
-            System.out.println("Tipo: " + type);
-            System.out.println("Estado: " + state);
-            System.out.println("Orden: " + order);
-            if (request.getParameter("searchMode").equals("JPQL")) {
-                receiptFacade.searchReceiptsJPQL(client, type, state, order);
-            } else {
-                System.out.println("CRITERIA");
+            try {
+                String client = "";
+                String type = "";
+                String state = "";
+                String order = "";
+
+                ReceiptFacade receiptFacade = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/ReceiptFacade");
+                if (request.getParameter("client") != null) {
+                    client = request.getParameter("client");
+                }
+                String aux = request.getParameter("chkType");
+                if (aux != null && aux.length() != 0) {
+                    type = request.getParameter("type");
+                }
+                aux = request.getParameter("chkState");
+                if (aux != null && aux.length() != 0) {
+                    state = request.getParameter("state");
+                }
+                order = request.getParameter("order");
+                String[] params = {client, type, state, order};
+                session.setAttribute("searchParams", params);
+                
+            } catch (NamingException ex) {
+                Logger.getLogger(ReceiptSearch.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }

@@ -5,6 +5,7 @@
  */
 package frontController;
 
+import com.as.practica2.entity.Client;
 import com.as.practica2.entity.Policy;
 import com.as.practica2.entity.Receipt;
 import com.as.practica2.entity.ReceiptState;
@@ -61,12 +62,12 @@ public class Receipts extends FrontCommand {
             try {
                 HttpSession session = request.getSession(true);
                 Policy policy = (Policy) session.getAttribute("policy");
-
+                Client client = (Client) session.getAttribute("client");
                 ReceiptStateFacade receiptStateFacade = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/ReceiptStateFacade");
                 ReceiptState receiptState = receiptStateFacade.findByName(request.getParameter("paid"));
-
                 ReceiptFacade receiptFacade = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/ReceiptFacade");
-                receiptFacade.addReceipt(policy, receiptState, parseDate(request.getParameter("date")), request.getParameter("amount"), request.getParameter("identification"));
+                receiptFacade.addReceipt(policy, receiptState, parseDate(request.getParameter("date")), request.getParameter("amount"), request.getParameter("identification"),
+                        client.getName(), policy.getCodProduct().getName(), policy.getIdentification());
             } catch (NamingException ex) {
                 Logger.getLogger(Receipts.class.getName()).log(Level.SEVERE, null, ex);
             }
