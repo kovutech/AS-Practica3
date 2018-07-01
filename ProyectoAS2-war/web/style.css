@@ -159,3 +159,7 @@ h2{
     align-items: center;
       display: flex;
 }
+
+a {
+    color: #26ccf1;
+}

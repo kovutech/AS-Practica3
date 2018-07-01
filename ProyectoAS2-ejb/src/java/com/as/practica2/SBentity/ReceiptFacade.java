@@ -102,13 +102,13 @@ public class ReceiptFacade extends AbstractFacade<Receipt> {
         if (type.equals("")) {
             type = "%";
         }
-
         List<Receipt> results = em.createQuery(query)
                 .setParameter("client", client)
                 .setParameter("tipoPoliza", type)
                 .setFirstResult((page - 1) * 5)
                 .setMaxResults(5)
                 .getResultList();
+
         if (results.size() > 0) {
             return results;
         } else {
@@ -131,18 +131,35 @@ public class ReceiptFacade extends AbstractFacade<Receipt> {
                     )
             ).orderBy(cb.asc(c.get("client")));
         } else {
+            q.select(c).where(
+                    cb.and(
+                            cb.like(c.get("client"), p),
+                            cb.like(c.get("tipoPoliza"), a)
+                    )
+            ).orderBy(cb.desc(c.get("client")));
         }
-        q.select(c).where(
-                cb.and(
-                        cb.like(c.get("client"), p),
-                        cb.like(c.get("tipoPoliza"), a)
-                )
-        ).orderBy(cb.desc(c.get("client")));
 
         TypedQuery<Receipt> query = em.createQuery(q);
         query.setParameter(p, "%" + client + "%").setParameter(a, "%" + type + "%");
         List<Receipt> results = query.getResultList();
         return results;
+    }
+
+    public int resultsCount(String client, String type, String order) {
+        String query = "SELECT r FROM Receipt r WHERE r.client LIKE :client and r.tipoPoliza LIKE :tipoPoliza order by r.client " + order;
+
+        if (client.equals("")) {
+            client = "%";
+        }
+        if (type.equals("")) {
+            type = "%";
+        }
+        List<Receipt> results = em.createQuery(query)
+                .setParameter("client", client)
+                .setParameter("tipoPoliza", type)
+                .getResultList();
+
+        return results.size();
     }
 
     public List<Receipt> searchReceiptsGroupByJPQL() {

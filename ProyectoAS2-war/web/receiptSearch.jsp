@@ -95,14 +95,17 @@
                     ReceiptFacade receiptFacade = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/ReceiptFacade");
                     String[] params = (String[]) session.getAttribute("searchParams");
                     int currentPage = (Integer) session.getAttribute("currentPage");
-                    System.out.println("Cliente : " + params[0] + "||| Tipo : " + params[1] + "||| Orden : " + params[2] + "||| Página : " + currentPage);
-
+                    if (request.getParameter("page") != null) {
+                        currentPage = Integer.parseInt(request.getParameter("page"));
+                        session.setAttribute("currentPage", currentPage);
+                    }
+                    System.out.println("PAGINA: " + currentPage);
                     if (request.getParameter("searchMode") != null) {
                         if (request.getParameter("searchMode").equals("JPQL")) {
                             receipts = receiptFacade.searchReceiptsJPQL(params[0], params[1], params[2], currentPage);
                         } else {
-                            receipts= receiptFacade.searchReceiptsCriteria(params[0], params[1], params[2], currentPage);
-                           System.out.println("CRITERIA");
+                            receipts = receiptFacade.searchReceiptsCriteria(params[0], params[1], params[2], currentPage);
+                            System.out.println("CRITERIA");
                         }
                     } else {
                         receipts = receiptFacade.searchReceiptsJPQL(params[0], params[1], params[2], currentPage);
@@ -131,7 +134,29 @@
 </TABLE>
 <TABLE border="1"class='center'>
     <tr>
-        <td width="90%"></td>
+        <td width="80%"></td>
+        <%
+            if (request.getParameter("search") != null) {
+                ReceiptFacade receiptFacade = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/ReceiptFacade");
+                String[] params = (String[]) session.getAttribute("searchParams");
+                int n = receiptFacade.resultsCount(params[0], params[1], params[2]);
+                int numPages = n / 5;
+                if (n % 5 != 0) {
+                    numPages += 1;
+                }
+                for (int i = 1; i <= numPages; i++) {
+                    
+        %>
+        <td width="100px">
+            <% out.print("<a href=/ProyectoAS2-war/receiptSearch.jsp?searchMode=JPQL&command=ReceiptSearch&search=1&client=&type=Accidentes&order=asc&criteria=Buscar&page=" + i + ">" + i + "</a>"); %>            
+        </td>
+
+        <%
+                }
+            }
+        %>
+
+
     <FORM action='FrontController' method='get'>
         <INPUT type="hidden" name="command" value="ReceiptSearch">
         <INPUT type="hidden" name="search" value="1">
