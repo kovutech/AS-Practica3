@@ -32,12 +32,12 @@
             <input type="password" name="pass" placeholder="Password" class="inputText" required/><br><br>
             <input type="hidden" name="command" value="Main">
             <input type="hidden" name="login" value="1">
-            <input type="submit" value="Login" class="boton"/>
+            <input type="submit" value="Login" class="button"/>
         </form>
         <br>
         <form action="FrontController" method='post'>
             <input type="hidden" name="command" value="Register">
-            <input type="submit" name="Registro" value="Registro" class='boton'>
+            <input type="submit" name="Registro" value="Registro" class='button'>
         </form>
     </div>
 </body>

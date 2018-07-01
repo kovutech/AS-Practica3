@@ -53,7 +53,7 @@
                 <option value="Cobrado">Cobrado</option>
                 <option value="Pendiente">Pendiente</option>
             </select> </TD>                
-        <TD><INPUT type='submit' value='Añadir' class='botonTable'></TD>
+        <TD><INPUT type='submit' value='Añadir' class='buttonTable'></TD>
         </TR>
     </TABLE>
 </FORM>
@@ -74,7 +74,7 @@
 
 <TABLE border=1 class='center'>
     <TR><TD colspan='7'>LISTADO DE RECIBOS</TD></TR>
-    <TR><TD>Referencia</TD><TD>F. efecto</TD><TD>Importe</TD><TD>Estado</TD><TD>Cobrar</TD></TR>
+    <TR><TD>Referencia</TD><TD>F. efecto</TD><TD>Importe</TD><TD>Estado</TD><TD>Cobrar</TD><TD>Eliminar</TD></TR>
             <%
                 ReceiptFacade receiptFacade = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/ReceiptFacade");
                 List<Receipt> receipts = receiptFacade.ReceiptByCodPolicy(policy);
@@ -98,7 +98,7 @@
             <FORM action='FrontController' method="post">
                 <INPUT type='hidden' name='command' value='Receipts'>
                 <INPUT type='hidden' name='charged' value="<%= elem.getIdReceipt()%>">
-                <INPUT type='submit' value='Cobrado' class='botonTable'>
+                <INPUT type='submit' value='Cobrado' class='buttonTable'>
             </FORM>
         </TD>
         <%
@@ -109,7 +109,7 @@
             <FORM action='FrontController' method='post'>
                 <INPUT type='hidden' name='command' value='Receipts'>
                 <INPUT type='hidden' name='deleteReceipt' value='<%= elem.getIdReceipt()%>'>
-                <INPUT type='submit' value='Eliminar' class='botonTable'>
+                <INPUT type='submit' value='Eliminar' class='buttonTable'>
             </FORM>
         </TD>
     </TR>
@@ -120,6 +120,6 @@
 <BR>
 <FORM action='FrontController'>
     <INPUT type='hidden' name='command' value='Policies'>
-    <INPUT type='submit' value='Volver' class='boton'>
+    <INPUT type='submit' value='Volver' class='button'>
 </FORM>
 <jsp:include page="footer.jsp"/>

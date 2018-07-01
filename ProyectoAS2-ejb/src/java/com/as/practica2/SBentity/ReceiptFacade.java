@@ -141,6 +141,8 @@ public class ReceiptFacade extends AbstractFacade<Receipt> {
 
         TypedQuery<Receipt> query = em.createQuery(q);
         query.setParameter(p, "%" + client + "%").setParameter(a, "%" + type + "%");
+        query.setFirstResult((page - 1) * 5);
+        query.setMaxResults(5);
         List<Receipt> results = query.getResultList();
         return results;
     }

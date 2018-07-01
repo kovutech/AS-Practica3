@@ -12,13 +12,13 @@
             <td rowspan="2">
                 <FORM action='FrontController'>
                     <INPUT type='hidden' name='command' value='Stadistics'>
-                    <INPUT type='submit' value='Estadisticas' class='boton'>
+                    <INPUT type='submit' value='Estadisticas' class='button'>
                 </FORM>
             </td>
             <td rowspan="2">
                 <FORM action='FrontController'>
                     <INPUT type='hidden' name='command' value='Log'>
-                    <INPUT type='submit' value='Log' class='boton'>
+                    <INPUT type='submit' value='Log' class='button'>
                 </FORM>
             </td>
         </tr>

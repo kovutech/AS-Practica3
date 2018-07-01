@@ -33,7 +33,12 @@
     estadisticasBean.addPage("main.jsp");
 %>
 <jsp:include page="headerA.jsp"/>
-
+<FORM action='FrontController'>
+    <INPUT type='hidden' name='command' value='ReceiptSearch'>
+    <INPUT type='submit' value='Búsqueda de recibos' class="button">
+</FORM>
+<BR>
+<BR>
 <FORM action='FrontController' method='post'>
     <TABLE border=1 class='center'>
         <TR><TD colspan='5'>AÑADIR CLIENTE</TD></TR>
@@ -42,10 +47,10 @@
         <INPUT type='hidden' name='command' value='Main'>
         <INPUT type='hidden' name='addClient' value='1'>
         <TD><INPUT type='text' pattern='\d{8}' name='identification' value='' placeholder='Dni' maxlength='8' required="true"></TD>
-        <TD><INPUT type='text' name='name' value='' placeholder='Nombre' required="true"></TD>
-        <TD><INPUT type='text' name='surName' value='' placeholder='Apellido' required="true"></TD>
+        <TD><INPUT type='text' name='name' value='' placeholder='Nombre' required="true" maxlength='15'></TD>
+        <TD><INPUT type='text' name='surName' value='' placeholder='Apellido' required="true" maxlength='15'></TD>
         <TD><INPUT type='text' pattern='\d{9}' name='telephone' value='' placeholder='Telefono' maxlength='9' required="true"></TD>
-        <TD><INPUT type='submit' value='Añadir' class='botonTable'></TD>
+        <TD><INPUT type='submit' value='Añadir' class='buttonTable'></TD>
         </TR>
     </TABLE>
 </FORM>
@@ -77,12 +82,12 @@
         <INPUT type='hidden' name='command' value='Policies'>
         <INPUT type='hidden' name='listPolicy' value='1'>
         <INPUT type='hidden' name='identification' value='<%= elem.getIdentification() %>'>
-        <TD><INPUT type='submit' value='Acceder' class='botonTable'></TD>
+        <TD><INPUT type='submit' value='Acceder' class='buttonTable'></TD>
     </FORM>
     <FORM action='FrontController' method='post'>
         <INPUT type='hidden' name='command' value='Main'>
         <INPUT type='hidden' name='deleteClient' value='<%= elem.getIdentification() %>'>
-        <TD><INPUT type='submit' value='Eliminar' class='botonTable'></TD>
+        <TD><INPUT type='submit' value='Eliminar' class='buttonTable'></TD>
     </FORM>
 </TR>
 <%

@@ -9,7 +9,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <head>
-    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="style.css">
     <title>Seguros lorem ipsun s.a.</title>
@@ -25,14 +25,21 @@
             </div>
             <div style="clear:both"></div>
         </div>
-        <FORM action='FrontController'>
-            <INPUT type='hidden' name='command' value='Logout'>
-            <INPUT type='submit' value='Cerrar sesión' class='botonLogout'>
-        </FORM><BR>
-        <%
-            User user = (User) session.getAttribute("user");
-            out.print("<h3>Agente: " + user.getName() + "</h3>");
-        %>
-
+        <div class="cajaUsuario">
+            
+            <div class="logoutIzquierda">
+                <%
+                    User user = (User) session.getAttribute("user");
+                    out.print("<h3 class='textUser'>Agente: " + user.getName() + "</h3>");
+                %>
+            </div>
+            <div class="logoutDerecha">
+                <FORM action='FrontController'>
+                    <INPUT type='hidden' name='command' value='Logout'>
+                    <INPUT type='submit' value='Cerrar sesión' class='logoutButton'>
+                </FORM>
+            </div>
+            <div style="clear:both"></div>
+        </div>
     </div>
 </body>

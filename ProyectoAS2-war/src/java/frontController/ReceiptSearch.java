@@ -56,7 +56,9 @@ public class ReceiptSearch extends FrontCommand {
                 if (request.getParameter("pageAtras") != null) {
                     currentPage -= 1;
                 } else {
-                    currentPage += 1;
+                    if (currentPage < Integer.parseInt(String.valueOf(session.getAttribute("maxPages")))) {
+                        currentPage += 1;
+                    }
                 }
                 session.setAttribute("currentPage", currentPage);
             } else {
@@ -79,6 +81,9 @@ public class ReceiptSearch extends FrontCommand {
                     if (params != null) {
                         session.setAttribute("searchParams", params);
 
+                    }
+                    if(request.getParameter("searchMode") != null){
+                        session.setAttribute("mode", request.getParameter("searchMode"));
                     }
                     session.setAttribute("currentPage", 1);
                 } catch (NamingException ex) {
