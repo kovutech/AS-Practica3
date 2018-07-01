@@ -13,6 +13,11 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.ParameterExpression;
+import javax.persistence.criteria.Root;
 
 /**
  *
@@ -103,6 +108,46 @@ public class ReceiptFacade extends AbstractFacade<Receipt> {
                 .setParameter("tipoPoliza", type)
                 .setFirstResult((page - 1) * 5)
                 .setMaxResults(5)
+                .getResultList();
+        if (results.size() > 0) {
+            return results;
+        } else {
+            return new ArrayList<Receipt>();
+        }
+    }
+
+    public List<Receipt> searchReceiptsCriteria(String client, String type, String order, int page) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Receipt> q = cb.createQuery(Receipt.class);
+        Root<Receipt> c = q.from(Receipt.class);
+        ParameterExpression<String> p = cb.parameter(String.class);
+        ParameterExpression<String> a = cb.parameter(String.class);
+
+        if (order.equals("asc")) {
+            q.select(c).where(
+                    cb.and(
+                            cb.like(c.get("client"), p),
+                            cb.like(c.get("tipoPoliza"), a)
+                    )
+            ).orderBy(cb.asc(c.get("client")));
+        } else {
+        }
+        q.select(c).where(
+                cb.and(
+                        cb.like(c.get("client"), p),
+                        cb.like(c.get("tipoPoliza"), a)
+                )
+        ).orderBy(cb.desc(c.get("client")));
+
+        TypedQuery<Receipt> query = em.createQuery(q);
+        query.setParameter(p, "%" + client + "%").setParameter(a, "%" + type + "%");
+        List<Receipt> results = query.getResultList();
+        return results;
+    }
+
+    public List<Receipt> searchReceiptsGroupByJPQL() {
+        String query = "SELECT r.client, COUNT(r.tipoPoliza) FROM Receipt r GROUP BY r.client ORDER BY COUNT(r.tipoPoliza)";
+        List<Receipt> results = em.createQuery(query)
                 .getResultList();
         if (results.size() > 0) {
             return results;

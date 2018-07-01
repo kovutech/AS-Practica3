@@ -99,16 +99,14 @@
 
                     if (request.getParameter("searchMode") != null) {
                         if (request.getParameter("searchMode").equals("JPQL")) {
-
                             receipts = receiptFacade.searchReceiptsJPQL(params[0], params[1], params[2], currentPage);
-                            //receipts = receiptFacade.searchReceiptsJPQL("", "", "", 1);
                         } else {
-                            System.out.println("CRITERIA");
+                            receipts= receiptFacade.searchReceiptsCriteria(params[0], params[1], params[2], currentPage);
+                           System.out.println("CRITERIA");
                         }
                     } else {
                         receipts = receiptFacade.searchReceiptsJPQL(params[0], params[1], params[2], currentPage);
                     }
-
                     if (receipts.size() <= 0 || receipts == null || receipts.isEmpty()) {
                         System.out.println("NADA");
                     } else {
