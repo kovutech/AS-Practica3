@@ -9,6 +9,7 @@ import com.as.practica2.entity.Client;
 import com.as.practica2.entity.Policy;
 import com.as.practica2.entity.Receipt;
 import com.as.practica2.entity.ReceiptState;
+import com.as.practica2.entity.User;
 import com.as.practica2.sbEntity.PolicyFacade;
 import com.as.practica2.sbEntity.ReceiptFacade;
 import com.as.practica2.sbEntity.ReceiptStateFacade;
@@ -46,10 +47,14 @@ public class Receipts extends FrontCommand {
     public void chargeReceipt() {
         if (request.getParameter("charged") != null) {
             try {
+                HttpSession session = request.getSession(true);
+                User user = (User) session.getAttribute("user");
                 ReceiptFacade receiptFacade = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/ReceiptFacade");
                 Receipt receipt = receiptFacade.findByIdReceipt(Integer.parseInt(request.getParameter("charged")));
+                receiptFacade.addTrace(user.getName(), "findByIdReceipt");
                 ReceiptStateFacade receiptStateFacade = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/ReceiptStateFacade");
                 ReceiptState receiptState = receiptStateFacade.findByName("Cobrado");
+                receiptStateFacade.addTrace(user.getName(), "findByName");
                 receiptFacade.chargedReceipt(receipt, receiptState);
             } catch (NamingException ex) {
                 Logger.getLogger(Receipts.class.getName()).log(Level.SEVERE, null, ex);
@@ -61,13 +66,16 @@ public class Receipts extends FrontCommand {
         if (request.getParameter("addReceipt") != null) {
             try {
                 HttpSession session = request.getSession(true);
+                User user = (User) session.getAttribute("user");
                 Policy policy = (Policy) session.getAttribute("policy");
                 Client client = (Client) session.getAttribute("client");
                 ReceiptStateFacade receiptStateFacade = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/ReceiptStateFacade");
                 ReceiptState receiptState = receiptStateFacade.findByName(request.getParameter("paid"));
+                receiptStateFacade.addTrace(user.getName(), "findByName");
                 ReceiptFacade receiptFacade = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/ReceiptFacade");
                 receiptFacade.addReceipt(policy, receiptState, parseDate(request.getParameter("date")), request.getParameter("amount"), request.getParameter("identification"),
                         client.getName(), policy.getCodProduct().getName(), policy.getIdentification());
+                receiptFacade.addTrace(user.getName(), "addReceipt");
             } catch (NamingException ex) {
                 Logger.getLogger(Receipts.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -89,9 +97,11 @@ public class Receipts extends FrontCommand {
     public void currentPolicy() {
         if (request.getParameter("newReceipt") != null) {
             try {
-                PolicyFacade policyFacade = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/PolicyFacade");
-                com.as.practica2.entity.Policy policy = policyFacade.findByIdentification(request.getParameter("idPolicy"));
                 HttpSession session = request.getSession(true);
+                User user = (User) session.getAttribute("user");
+                PolicyFacade policyFacade = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/PolicyFacade");
+                Policy policy = policyFacade.findByIdentification(request.getParameter("idPolicy"));
+                policyFacade.addTrace(user.getName(), "findByIdentification");
                 session.setAttribute("policy", policy);
             } catch (NamingException ex) {
                 Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, ex);
@@ -102,9 +112,13 @@ public class Receipts extends FrontCommand {
     public void deletePolicy() {
         if (request.getParameter("deleteReceipt") != null) {
             try {
+                HttpSession session = request.getSession(true);
+                User user = (User) session.getAttribute("user");
                 ReceiptFacade receiptFacade = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/ReceiptFacade");
                 Receipt receipt = receiptFacade.findByIdReceipt(Integer.parseInt(request.getParameter("deleteReceipt")));
+                receiptFacade.addTrace(user.getName(), "findByIdReceipt");
                 receiptFacade.deleteReceipt(receipt);
+                receiptFacade.addTrace(user.getName(), "deleteReceipt");
             } catch (NamingException ex) {
                 Logger.getLogger(Receipts.class.getName()).log(Level.SEVERE, null, ex);
             }

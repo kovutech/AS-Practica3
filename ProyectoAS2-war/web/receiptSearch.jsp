@@ -99,11 +99,8 @@
                         currentPage = Integer.parseInt(request.getParameter("page"));
                         session.setAttribute("currentPage", currentPage);
                     }
-                    System.out.println("PAGINA: " + currentPage);
                     if (session.getAttribute("mode") != null) {
                         if (session.getAttribute("mode").equals("JPQL")) {
-//                    if (request.getParameter("searchMode") != null) {
-//                        if (request.getParameter("searchMode").equals("JPQL")) {
                             System.out.println("JPQL");
                             receipts = receiptFacade.searchReceiptsJPQL(params[0], params[1], params[2], currentPage);
                         } else {

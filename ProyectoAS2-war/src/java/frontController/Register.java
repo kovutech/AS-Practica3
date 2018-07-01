@@ -7,7 +7,13 @@ package frontController;
 
 import com.as.practica2.sbEntity.UserFacade;
 import com.as.practica2.entity.User;
+import com.as.practica2.singleton.LogBean;
+import com.as.practica2.singleton.StadisticsBean;
+import com.as.practica2.stateful.ClientBean;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,6 +28,9 @@ import javax.servlet.http.HttpSession;
  */
 public class Register extends FrontCommand {
 
+    private LogBean log;
+    private StadisticsBean stadistics;
+
     @Override
     public void process() {
         try {
@@ -35,18 +44,20 @@ public class Register extends FrontCommand {
         }
     }
 
-     public boolean addUser() {
+    public boolean addUser() {
         try {
             HttpSession session = request.getSession(true);
             UserFacade userFacade = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/UserFacade");
             if (request.getParameter("register") != null) {
                 List<User> users = userFacade.findAll();
+                userFacade.addTrace("ninguno", "findAll");
                 for (User user : users) {
                     if (user.getName().equals(request.getParameter("user"))) {
                         return false;
                     }
                 }
                 userFacade.create(new User(null, request.getParameter("user"), request.getParameter("pass"), request.getParameter("email")));
+                userFacade.addTrace("ninguno", "create");
                 session.removeAttribute("user");
                 return true;
             }

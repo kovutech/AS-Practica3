@@ -6,8 +6,14 @@
 package com.as.practica2.sbEntity;
 
 import com.as.practica2.entity.Products;
+import com.as.practica2.singleton.LogBean;
+import com.as.practica2.singleton.StadisticsBean;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.Stateless;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -18,6 +24,9 @@ import javax.persistence.PersistenceContext;
 @Stateless
 public class ProductsFacade extends AbstractFacade<Products> {
 
+    private LogBean log;
+    private StadisticsBean stadistics;
+    
     @PersistenceContext(unitName = "ProyectoAS2-ejbPU")
     private EntityManager em;
 
@@ -38,6 +47,18 @@ public class ProductsFacade extends AbstractFacade<Products> {
             return products.get(0);
         } else {
             return null;
+        }
+    }
+    
+     public void addTrace(String user, String method){
+        try {
+            stadistics = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/StadisticsBean");
+            log = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/LogBean");
+            stadistics.addComponentUsers(user);
+            log.addFuntion("ProductsFacade::" + method + "::" + user);
+            stadistics.addComponent("ProductsFacade");
+        } catch (NamingException ex) {
+            Logger.getLogger(ClientFacade.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

@@ -32,10 +32,16 @@
                 <TR><TD><INPUT type='text' name='user' value='' minlength='5' placeholder='Usuario' required='true'></TD></TR>
                 <TR><TD><INPUT type='password' name='pass' value='' minlength='5' placeholder='Contraseña' required='true'></TD></TR>
                 <TR><TD><INPUT type='text' name='email' value='' minlength='5' placeholder='Email' required='true'></TD></TR>
-                <TR><TD><INPUT type='submit' value='Registrarme' class='botonTable'></TD></TR>
+                <TR><TD><INPUT type='submit' value='Registrarme' class='button'></TD></TR>
                 <INPUT type='hidden' name='register' value='1'>
                 <INPUT type='hidden' name='command' value='Register'>
             </TABLE>
+        </FORM>
+        <BR>
+        <BR>
+        <FORM action='FrontController'>
+            <INPUT type='hidden' name='command' value='Main'>
+            <INPUT type='submit' value='Volver' class='button'>
         </FORM>
     </body>
     <jsp:include page="footer.jsp"/>

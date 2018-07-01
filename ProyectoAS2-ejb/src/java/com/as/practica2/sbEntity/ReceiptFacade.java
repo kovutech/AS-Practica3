@@ -8,9 +8,15 @@ package com.as.practica2.sbEntity;
 import com.as.practica2.entity.Policy;
 import com.as.practica2.entity.Receipt;
 import com.as.practica2.entity.ReceiptState;
+import com.as.practica2.singleton.LogBean;
+import com.as.practica2.singleton.StadisticsBean;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.Stateless;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -26,6 +32,9 @@ import javax.persistence.criteria.Root;
 @Stateless
 public class ReceiptFacade extends AbstractFacade<Receipt> {
 
+    private LogBean log;
+    private StadisticsBean stadistics;
+    
     @PersistenceContext(unitName = "ProyectoAS2-ejbPU")
     private EntityManager em;
 
@@ -103,8 +112,8 @@ public class ReceiptFacade extends AbstractFacade<Receipt> {
             type = "%";
         }
         List<Receipt> results = em.createQuery(query)
-                .setParameter("client", client)
-                .setParameter("tipoPoliza", type)
+                .setParameter("client", "%" + client + "%")
+                .setParameter("tipoPoliza", "%" + type + "%")
                 .setFirstResult((page - 1) * 5)
                 .setMaxResults(5)
                 .getResultList();
@@ -172,6 +181,18 @@ public class ReceiptFacade extends AbstractFacade<Receipt> {
             return results;
         } else {
             return new ArrayList<Receipt>();
+        }
+    }
+    
+     public void addTrace(String user, String method){
+        try {
+            stadistics = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/StadisticsBean");
+            log = InitialContext.doLookup("java:global/ProyectoAS2/ProyectoAS2-ejb/LogBean");
+            stadistics.addComponentUsers(user);
+            log.addFuntion("ReceiptFacade::" + method + "::" + user);
+            stadistics.addComponent("ReceiptFacade");
+        } catch (NamingException ex) {
+            Logger.getLogger(ClientFacade.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }
